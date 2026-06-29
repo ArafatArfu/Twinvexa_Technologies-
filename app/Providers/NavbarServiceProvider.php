@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\NavbarItem;
-use App\Models\NavbarSetting;
+use App\Models\HeaderMenu;
+use App\Models\HeaderSection;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 
@@ -17,10 +17,10 @@ class NavbarServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('partials.header', function ($view) {
-            $navbarItems = NavbarItem::withChildren()->get();
-            $settings = NavbarSetting::first();
+            $headerSections = HeaderSection::visible()->with('menus.children')->get();
+            $settings = \App\Models\NavbarSetting::first();
 
-            $view->with(compact('navbarItems', 'settings'));
+            $view->with(compact('headerSections', 'settings'));
         });
     }
 }

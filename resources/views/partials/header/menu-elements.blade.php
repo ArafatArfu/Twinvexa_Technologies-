@@ -1,5 +1,5 @@
-<li>
-    <a href="#" class="sf-with-ul">Elements</a>
+<li class="megamenu-container active">
+    <a href="{{ $item->url ?? '#' }}" class="sf-with-ul">Elements</a>
 
     <ul>
         <li><a href="#">Products</a></li>

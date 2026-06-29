@@ -27,23 +27,26 @@ $demos = [
 ];
 @endphp
 
-<div class="megamenu demo">
-    <div class="menu-col">
-        <div class="menu-title">Choose your demo</div>
+<li class="megamenu-container active">
+    <a href="{{ $item->url ?? '/' }}" class="sf-with-ul">Home</a>
+    <div class="megamenu demo">
+        <div class="menu-col">
+            <div class="menu-title">Choose your demo</div>
 
-        <div class="demo-list">
-            @foreach($demos as $demo)
-                <div class="demo-item @if($demo['hidden'] ?? false) hidden @endif">
-                    <a href="#">
-                        <span class="demo-bg" style="background-image: url({{ asset('assets/images/menu/demos/' . $demo['image']) }});"></span>
-                        <span class="demo-title">{{ $demo['title'] }}</span>
-                    </a>
-                </div>
-            @endforeach
-        </div>
+            <div class="demo-list">
+                @foreach($demos as $demo)
+                    <div class="demo-item @if($demo['hidden'] ?? false) hidden @endif">
+                        <a href="#">
+                            <span class="demo-bg" style="background-image: url({{ asset('assets/images/menu/demos/' . $demo['image']) }});"></span>
+                            <span class="demo-title">{{ $demo['title'] }}</span>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
 
-        <div class="megamenu-action text-center">
-            <a href="#" class="btn btn-outline-primary-2 view-all-demos"><span>View All Demos</span><i class="icon-long-arrow-right"></i></a>
+            <div class="megamenu-action text-center">
+                <a href="#" class="btn btn-outline-primary-2 view-all-demos"><span>View All Demos</span><i class="icon-long-arrow-right"></i></a>
+            </div>
         </div>
     </div>
-</div>
+</li>

@@ -1,3 +1,7 @@
+@php
+$mainMenuItems = $headerSections->where('key', 'main_menu')->first()?->menus->whereNull('parent_id') ?? collect();
+@endphp
+
 <div class="header-bottom sticky-header">
     <div class="container">
         <div class="header-left">
@@ -13,4 +17,4 @@
         </div>
     </div>
 </div>
-    </header>
+</header>

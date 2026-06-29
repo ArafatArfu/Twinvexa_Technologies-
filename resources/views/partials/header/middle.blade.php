@@ -1,3 +1,7 @@
+@php
+$settings = \App\Models\NavbarSetting::first();
+@endphp
+
 <div class="header-middle">
     <div class="container">
         <div class="header-left">
