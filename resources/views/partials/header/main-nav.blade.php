@@ -1,10 +1,22 @@
 <nav class="main-nav">
     <ul class="menu sf-arrows">
-        @include('partials.header.menu-home')
-        @include('partials.header.menu-shop')
-        @include('partials.header.menu-product')
-        @include('partials.header.menu-pages')
-        @include('partials.header.menu-blog')
-        @include('partials.header.menu-elements')
+        @foreach($navbarItems as $item)
+            <li class="{{ $item->children->count() > 0 ? 'megamenu-container' : '' }} {{ $item->is_dropdown ? 'megamenu-container' : '' }}">
+                <a href="{{ $item->url }}" class="{{ $item->children->count() > 0 ? 'sf-with-ul' : '' }}">{{ $item->title }}</a>
+
+                @if($item->children->count() > 0)
+                    <div class="megamenu demo">
+                        <div class="menu-col">
+                            <div class="menu-title">Submenu</div>
+                            <ul>
+                                @foreach($item->children as $child)
+                                    <li><a href="{{ $child->url }}">{{ $child->title }}</a></li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endif
+            </li>
+        @endforeach
     </ul>
 </nav>
