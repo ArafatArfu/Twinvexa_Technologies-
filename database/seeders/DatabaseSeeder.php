@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             HeaderSectionSeeder::class,
             HeaderMenuSeeder::class,
+            NavbarSettingsSeeder::class,
         ]);
 
         User::factory()->create([

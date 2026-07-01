@@ -1,5 +1,5 @@
 @php
-$mainMenuItems = $headerSections->where('key', 'main_menu')->first()?->menus->whereNull('parent_id') ?? collect();
+use Illuminate\Support\Facades\Auth;
 @endphp
 
 <div class="header-bottom sticky-header">
@@ -13,8 +13,13 @@ $mainMenuItems = $headerSections->where('key', 'main_menu')->first()?->menus->wh
         </div>
 
         <div class="header-right">
-            <i class="la la-lightbulb-o"></i><p>Clearance<span class="highlight">&nbsp;Up to 30% Off</span></p>
+            @if($settings)
+                <i class="la la-lightbulb-o"></i>
+                <p>{{ $settings->top_bar_text ?? 'Clearance' }}<span class="highlight">&nbsp;{{ $settings->top_bar_highlight ?? 'Up to 30% Off' }}</span></p>
+            @else
+                <i class="la la-lightbulb-o"></i>
+                <p>Clearance<span class="highlight">&nbsp;Up to 30% Off</span></p>
+            @endif
         </div>
     </div>
 </div>
-</header>

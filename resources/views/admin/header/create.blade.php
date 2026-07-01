@@ -53,6 +53,23 @@
 
     <div class="mb-3">
         <div class="form-check">
+            <input type="checkbox" name="is_megamenu" id="is_megamenu" class="form-check-input" value="1" {{ old('is_megamenu') ? 'checked' : '' }}>
+            <label for="is_megamenu" class="form-check-label">Is Megamenu</label>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="megamenu_class" class="form-label">Megamenu Class</label>
+        <select name="megamenu_class" id="megamenu_class" class="form-control">
+            <option value="">None</option>
+            <option value="demo" {{ old('megamenu_class') == 'demo' ? 'selected' : '' }}>Demo</option>
+            <option value="shop-content" {{ old('megamenu_class') == 'shop-content' ? 'selected' : '' }}>Shop Content</option>
+            <option value="product" {{ old('megamenu_class') == 'product' ? 'selected' : '' }}>Product</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-check">
             <input type="checkbox" name="is_visible" id="is_visible" class="form-check-input" value="1" {{ old('is_visible', true) ? 'checked' : '' }}>
             <label for="is_visible" class="form-check-label">Visible</label>
         </div>

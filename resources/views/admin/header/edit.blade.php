@@ -60,7 +60,12 @@
 
     <div class="mb-3">
         <label for="megamenu_class" class="form-label">Megamenu Class</label>
-        <input type="text" name="megamenu_class" id="megamenu_class" class="form-control" value="{{ old('megamenu_class', $headerMenu->megamenu_class) }}">
+        <select name="megamenu_class" id="megamenu_class" class="form-control">
+            <option value="">None</option>
+            <option value="demo" {{ old('megamenu_class', $headerMenu->megamenu_class) == 'demo' ? 'selected' : '' }}>Demo</option>
+            <option value="shop-content" {{ old('megamenu_class', $headerMenu->megamenu_class) == 'shop-content' ? 'selected' : '' }}>Shop Content</option>
+            <option value="product" {{ old('megamenu_class', $headerMenu->megamenu_class) == 'product' ? 'selected' : '' }}>Product</option>
+        </select>
     </div>
 
     <div class="mb-3">

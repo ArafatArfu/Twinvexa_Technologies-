@@ -1,7 +1,3 @@
-@php
-$settings = \App\Models\NavbarSetting::first();
-@endphp
-
 <div class="header-middle">
     <div class="container">
         <div class="header-left">
@@ -11,7 +7,23 @@ $settings = \App\Models\NavbarSetting::first();
             </button>
 
             <a href="/" class="logo">
-                <img src="{{ asset($settings->logo ?? 'assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" width="105" height="25">
+                @php
+                    $logoUrl = null;
+                    if ($settings && $settings->logo) {
+                        if (str_starts_with($settings->logo, 'assets/')) {
+                            $logoUrl = asset($settings->logo);
+                        } elseif (Storage::disk('public')->exists($settings->logo)) {
+                            $logoUrl = asset('storage/' . $settings->logo);
+                        }
+                    }
+                @endphp
+                @if($logoUrl)
+                    <img src="{{ $logoUrl }}" alt="{{ $settings->logo_text ?? 'Logo' }}" width="{{ $settings->logo_width ?? 105 }}" height="{{ $settings->logo_height ?? 25 }}" style="max-width: 100%; height: auto; object-fit: contain;">
+                @elseif($settings && $settings->logo_text)
+                    {{ $settings->logo_text }}
+                @else
+                    <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" width="105" height="25">
+                @endif
             </a>
         </div>
 
