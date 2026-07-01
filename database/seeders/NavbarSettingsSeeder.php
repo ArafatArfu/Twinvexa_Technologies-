@@ -19,8 +19,8 @@ class NavbarSettingsSeeder extends Seeder
                 'contact_icon' => 'icon-phone',
                 'top_bar_text' => 'Clearance',
                 'top_bar_highlight' => 'Up to 30% Off',
-                'logo_width' => 105,
-                'logo_height' => 25,
+                'logo_width' => 65,
+                'logo_height' => 16,
             ]
         );
     }

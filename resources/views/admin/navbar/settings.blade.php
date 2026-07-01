@@ -56,12 +56,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="logo_width" class="form-label">Logo Width (px)</label>
-                            <input type="number" class="form-control @error('logo_width') is-invalid @enderror" id="logo_width" name="logo_width" value="{{ old('logo_width', $settings->logo_width ?? 105) }}" placeholder="e.g., 105" min="10" max="1000">
+                            <input type="number" class="form-control @error('logo_width') is-invalid @enderror" id="logo_width" name="logo_width" value="{{ old('logo_width', $settings->logo_width ?? 65) }}" placeholder="e.g., 65" min="10" max="1000">
                             @error('logo_width')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="mb-3">
                             <label for="logo_height" class="form-label">Logo Height (px)</label>
-                            <input type="number" class="form-control @error('logo_height') is-invalid @enderror" id="logo_height" name="logo_height" value="{{ old('logo_height', $settings->logo_height ?? 25) }}" placeholder="e.g., 25" min="10" max="500">
+                            <input type="number" class="form-control @error('logo_height') is-invalid @enderror" id="logo_height" name="logo_height" value="{{ old('logo_height', $settings->logo_height ?? 16) }}" placeholder="e.g., 16" min="10" max="500">
                             @error('logo_height')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="mb-3">

@@ -6,7 +6,7 @@
                 <i class="icon-bars"></i>
             </button>
 
-            <a href="/" class="logo">
+            <a href="/" class="logo" style="display: flex; align-items: center; flex-wrap: nowrap; text-decoration: none; gap: 0.6rem;">
                 @php
                     $logoUrl = null;
                     if ($settings && $settings->logo) {
@@ -16,15 +16,53 @@
                             $logoUrl = asset('storage/' . $settings->logo);
                         }
                     }
+                    $logoWidth = $settings->logo_width ?? 65;
+                    $logoHeight = $settings->logo_height ?? 16;
                 @endphp
                 @if($logoUrl)
-                    <img src="{{ $logoUrl }}" alt="{{ $settings->logo_text ?? 'Logo' }}" width="{{ $settings->logo_width ?? 105 }}" height="{{ $settings->logo_height ?? 25 }}" style="max-width: 100%; height: auto; object-fit: contain;">
-                @elseif($settings && $settings->logo_text)
-                    {{ $settings->logo_text }}
+                    <img src="{{ $logoUrl }}" alt="{{ $settings->logo_text ?? 'Logo' }}" width="{{ $logoWidth }}" height="{{ $logoHeight }}" style="max-width: none; height: auto; object-fit: contain; flex-shrink: 0; image-rendering: auto;">
                 @else
-                    <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" width="105" height="25">
+                    <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" width="65" height="16" style="max-width: none; height: auto; object-fit: contain; flex-shrink: 0; image-rendering: auto;">
+                @endif
+                @if($settings && $settings->logo_text)
+                    <span class="logo-name" style="white-space: nowrap; font-size: 1.8rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1; background: linear-gradient(to right, #39f, #1d84ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent;">{{ $settings->logo_text }}</span>
                 @endif
             </a>
+
+            <style>
+                @media screen and (max-width: 991px) {
+                    .header-4 .header-middle .header-left {
+                        flex: 0 0 40% !important;
+                        max-width: 40% !important;
+                    }
+                    .header-4 .header-middle .header-center {
+                        flex: 0 0 50% !important;
+                        max-width: 50% !important;
+                    }
+                    .header-4 .header-search-extended {
+                        margin-right: 4rem !important;
+                    }
+                    .header-left .logo-name {
+                        font-size: 1.5rem !important;
+                    }
+                }
+                @media screen and (max-width: 767px) {
+                    .header-4 .header-middle .header-left {
+                        flex: 0 0 auto !important;
+                        max-width: none !important;
+                    }
+                    .header-4 .header-middle .header-center {
+                        flex: 0 0 auto !important;
+                        max-width: none !important;
+                    }
+                    .header-4 .header-search-extended {
+                        margin-right: 0 !important;
+                    }
+                    .header-left .logo-name {
+                        font-size: 1.3rem !important;
+                    }
+                }
+            </style>
         </div>
 
         <div class="header-center">

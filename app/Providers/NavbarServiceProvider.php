@@ -17,7 +17,7 @@ class NavbarServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        View::composer(['partials.header', 'partials.header.top', 'partials.header.middle', 'partials.header.bottom', 'partials.mobile-menu.tab-content'], function ($view) {
+        View::composer(['partials.header', 'partials.header.top', 'partials.header.middle', 'partials.header.bottom', 'partials.mobile-menu.tab-content', 'layouts.molla'], function ($view) {
             $headerSections = HeaderSection::visible()->with('menus.children')->get();
             $settings = NavbarSetting::firstOrCreate(['id' => 1]);
 
