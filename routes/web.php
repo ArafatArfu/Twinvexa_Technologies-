@@ -7,10 +7,42 @@ use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\HeaderMenuController;
 use App\Http\Controllers\HeaderSectionController;
 use App\Http\Controllers\IntroSliderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\CompareController;
+use App\Http\Controllers\SliderProductController;
 
 Route::get('/', function () {
     return view('index-4');
 });
+
+Route::get('product/{slug}', [ProductController::class, 'show'])
+    ->name('products.show');
+
+Route::post('product/{slug}/review', [ProductController::class, 'review'])
+    ->name('products.review.store');
+
+Route::middleware('auth')->prefix('cart')->name('cart.')->group(function () {
+    Route::post('add/{product}', [CartController::class, 'add'])->name('add');
+    Route::get('/', [CartController::class, 'index'])->name('index');
+    Route::delete('{cartItem}', [CartController::class, 'destroy'])->name('destroy');
+    Route::put('{cartItem}', [CartController::class, 'update'])->name('update');
+});
+
+Route::middleware('auth')->prefix('wishlist')->name('wishlist.')->group(function () {
+    Route::post('toggle/{product}', [WishlistController::class, 'toggle'])->name('toggle');
+});
+
+Route::middleware('auth')->prefix('compare')->name('compare.')->group(function () {
+    Route::post('toggle/{product}', [CompareController::class, 'toggle'])->name('toggle');
+});
+
+Route::get('compare', [CompareController::class, 'index'])->name('compare.index');
+
+Route::get('404', function () {
+    return view('errors.404');
+})->name('errors.404');
 
 // Authentication Routes
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -54,9 +86,15 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('intro-slider/{introSlider}/edit', [IntroSliderController::class, 'edit'])->name('intro-slider.edit');
     Route::put('intro-slider/{introSlider}', [IntroSliderController::class, 'update'])->name('intro-slider.update');
     Route::delete('intro-slider/{introSlider}', [IntroSliderController::class, 'destroy'])->name('intro-slider.destroy');
+
+    Route::get('intro-slider/{introSlider}/product', [SliderProductController::class, 'edit'])->name('slider-product.edit');
+    Route::put('intro-slider/{introSlider}/product', [SliderProductController::class, 'update'])->name('slider-product.update');
 });
 
-// Product details route (publicly accessible)
-Route::get('product/{slug}', function ($slug) {
-    return view('product.show', compact('slug'));
-})->name('product.show');
+Route::get('intro-sliders', [IntroSliderController::class, 'publicIndex'])->name('intro-sliders.index');
+Route::get('intro-slider/{slug}', [IntroSliderController::class, 'publicShow'])->name('intro-slider.show');
+Route::post('intro-slider/{slug}/review', [SliderProductController::class, 'review'])->name('slider-product.review.store');
+
+Route::fallback(function () {
+    return view('errors.404');
+})->name('errors.404');

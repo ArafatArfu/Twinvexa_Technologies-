@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             HeaderMenuSeeder::class,
             NavbarSettingsSeeder::class,
             IntroSliderSeeder::class,
+            ProductSeeder::class,
         ]);
 
         User::factory()->create([

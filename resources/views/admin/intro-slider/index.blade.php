@@ -8,48 +8,46 @@
     <a href="{{ route('admin.intro-slider.create') }}" class="btn btn-primary">Add New Slider</a>
 </div>
 
-<table class="table table-bordered">
+<div class="alert alert-info">
+    <strong>Note:</strong> Use <strong>"Manage Product Details"</strong> to configure the product page for each slider. Use <strong>"Edit Slider"</strong> to change the homepage banner (title, image, badge, button, etc.).
+</div>
+
+<table class="table table-bordered align-middle">
     <thead>
         <tr>
-            <th>Order</th>
-            <th>Image</th>
-            <th>Title</th>
+            <th style="width: 60px;">Order</th>
+            <th style="width: 120px;">Image</th>
+            <th>Slider Title</th>
             <th>Subtitle</th>
             <th>Price</th>
-            <th>Button Text</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th style="width: 100px;">Status</th>
+            <th style="width: 380px;">Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($sliders as $slider)
+        @forelse($sliders as $slider)
             <tr>
-                <td>{{ $slider->order }}</td>
+                <td class="text-center">{{ $slider->order }}</td>
                 <td>
-                    @if($slider->image)
-                        @php
-                            $imageUrl = str_starts_with($slider->image, 'assets/') 
-                                ? asset($slider->image) 
-                                : (Storage::disk('public')->exists($slider->image) ? asset('storage/' . $slider->image) : null);
-                        @endphp
-                        @if($imageUrl)
-                            <img src="{{ $imageUrl }}" alt="Slider Image" width="100" class="img-thumbnail">
-                        @else
-                            <span class="text-muted">No Image</span>
-                        @endif
+                    @if($slider->image_url)
+                        <img src="{{ $slider->image_url }}" alt="Slider Image" width="100" class="img-thumbnail">
                     @else
-                        <span class="text-muted">No Image</span>
+                        <span class="text-muted small">No image</span>
                     @endif
                 </td>
-                <td>{{ $slider->title }}</td>
+                <td>
+                    <a href="{{ route('admin.intro-slider.edit', $slider) }}" class="fw-bold text-decoration-none">
+                        {{ strip_tags($slider->title) }}
+                    </a>
+                    <br><small class="text-muted">Slug: {{ $slider->slug ?? 'Not set' }}</small>
+                </td>
                 <td>{{ $slider->subtitle ?? '-' }}</td>
                 <td>
                     @if($slider->old_price)
                         <sup class="text-muted">{{ $slider->old_price }}</sup>
                     @endif
-                    <span class="text-primary">{{ $slider->price ?? '-' }}</span>
+                    <span class="text-primary fw-bold">{{ $slider->price ?? '-' }}</span>
                 </td>
-                <td>{{ $slider->button_text ?? '-' }}</td>
                 <td>
                     @if($slider->is_active)
                         <span class="badge bg-success">Active</span>
@@ -58,15 +56,23 @@
                     @endif
                 </td>
                 <td>
-                    <a href="{{ route('admin.intro-slider.edit', $slider) }}" class="btn btn-sm btn-warning">Edit</a>
-                    <form action="{{ route('admin.intro-slider.destroy', $slider) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
+                    <div class="d-flex flex-wrap gap-1">
+                        <a href="{{ route('intro-slider.show', $slider->slug) }}" class="btn btn-sm btn-info" target="_blank">View Product Page</a>
+                        <a href="{{ route('admin.slider-product.edit', $slider) }}" class="btn btn-sm btn-primary">Manage Product Details</a>
+                        <a href="{{ route('admin.intro-slider.edit', $slider) }}" class="btn btn-sm btn-warning">Edit Slider</a>
+                        <form action="{{ route('admin.intro-slider.destroy', $slider) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="7" class="text-center py-4">No sliders found. <a href="{{ route('admin.intro-slider.create') }}">Create your first slider</a>.</td>
+            </tr>
+        @endforelse
     </tbody>
 </table>
 @endsection

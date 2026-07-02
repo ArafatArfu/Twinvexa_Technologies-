@@ -98,4 +98,21 @@ class IntroSliderController extends Controller
         return redirect()->route('admin.intro-slider.index')
             ->with('success', 'Intro slider deleted successfully.');
     }
+
+    public function publicIndex(): View
+    {
+        $sliders = IntroSlider::active()->ordered()->get();
+
+        return view('intro-slider.index', compact('sliders'));
+    }
+
+    public function publicShow(string $slug): View
+    {
+        $slider = IntroSlider::where('slug', $slug)
+            ->active()
+            ->with('sliderProduct.category', 'sliderProduct.brand', 'sliderProduct.images', 'sliderProduct.variants', 'sliderProduct.specifications', 'sliderProduct.tags', 'sliderProduct.reviews')
+            ->firstOrFail();
+
+        return view('intro-slider.show', compact('slider'));
+    }
 }

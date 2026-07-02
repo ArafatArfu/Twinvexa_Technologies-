@@ -14,17 +14,23 @@ class IntroSliderUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['sometimes', 'required', 'string', 'max:255'],
+            'title' => ['sometimes', 'required', 'string', 'max:500'],
             'subtitle' => ['nullable', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'button_text' => ['nullable', 'string', 'max:255'],
-            'button_url' => ['nullable', 'string', 'max:255'],
             'price' => ['nullable', 'string', 'max:255'],
             'old_price' => ['nullable', 'string', 'max:255'],
-            'product_slug' => ['nullable', 'string', 'max:255'],
+            'badge_text' => ['nullable', 'string', 'max:255'],
+            'badge_type' => ['nullable', 'string', 'in:sale,new,top'],
+            'button_text' => ['nullable', 'string', 'max:255'],
+            'button_url' => ['nullable', 'string', 'max:255'],
             'image' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,webp,svg', 'max:4096'],
             'order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['sometimes', 'boolean'],
+            'background_color' => ['nullable', 'string', 'max:255'],
+            'text_color' => ['nullable', 'string', 'max:255'],
+            'alignment' => ['nullable', 'string', 'in:left,center,right'],
+            'overlay_opacity' => ['nullable', 'integer', 'min:0', 'max:90'],
+            'meta_title' => ['nullable', 'string', 'max:255'],
+            'meta_description' => ['nullable', 'string', 'max:500'],
         ];
     }
 

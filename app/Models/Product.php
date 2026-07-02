@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+
+class Product extends Model
+{
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'short_description',
+        'sku',
+        'price',
+        'old_price',
+        'image',
+        'quantity',
+        'is_active',
+        'is_featured',
+        'is_new',
+        'is_sale',
+        'category_id',
+        'brand_id',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'is_featured' => 'boolean',
+        'is_new' => 'boolean',
+        'is_sale' => 'boolean',
+    ];
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(ProductImage::class)->orderBy('order');
+    }
+
+    public function variants(): HasMany
+    {
+        return $this->hasMany(ProductVariant::class);
+    }
+
+    public function specifications(): HasMany
+    {
+        return $this->hasMany(ProductSpecification::class)->orderBy('order');
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function tags(): HasMany
+    {
+        return $this->hasMany(ProductTag::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
+    }
+
+    public function getDiscountPercentageAttribute(): ?string
+    {
+        if ($this->old_price && $this->price) {
+            $old = (float) str_replace(['$', ','], '', $this->old_price);
+            $new = (float) str_replace(['$', ','], '', $this->price);
+            if ($old > 0) {
+                $percentage = round((($old - $new) / $old) * 100);
+                return $percentage . '%';
+            }
+        }
+        return null;
+    }
+
+    public function getAverageRatingAttribute(): float
+    {
+        return $this->reviews()->avg('rating') ?: 0;
+    }
+
+    public function getReviewCountAttribute(): int
+    {
+        return $this->reviews()->count();
+    }
+
+    public function isAvailable(): bool
+    {
+        return $this->quantity > 0;
+    }
+}

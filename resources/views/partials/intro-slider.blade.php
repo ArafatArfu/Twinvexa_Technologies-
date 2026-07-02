@@ -16,7 +16,7 @@
                 $bgImage = $slider->image
                     ? (str_starts_with($slider->image, 'assets/') ? asset($slider->image) : asset('storage/' . $slider->image))
                     : asset('assets/images/demos/demo-4/slider/slide-1.png');
-                $slideLink = $slider->product_slug ? route('product.show', $slider->product_slug) : $slider->button_url;
+                $slideLink = $slider->link ?: $slider->button_url ?: '#';
             @endphp
             <div class="intro-slide" style="background-image: url({{ $bgImage }});">
                 <div class="container intro-content">
@@ -25,7 +25,7 @@
                             @if($slider->subtitle)
                                 <h3 class="intro-subtitle text-primary">{{ $slider->subtitle }}</h3>
                             @endif
-                            <h1 class="intro-title">{!! $slider->title !!}</h1>
+                            <h1 class="intro-title">{!! nl2br(e(preg_replace('/<br\s*\/?>/i', PHP_EOL, $slider->title))) !!}</h1>
                             @if($slider->description)
                                 <p class="intro-description">{!! $slider->description !!}</p>
                             @endif
