@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\HeaderMenuController;
+use App\Http\Controllers\HeaderSectionController;
+use App\Http\Controllers\IntroSliderController;
 
 Route::get('/', function () {
     return view('index-4');
@@ -38,4 +40,23 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('header/{headerMenu}/edit', [HeaderMenuController::class, 'edit'])->name('header.edit');
     Route::put('header/{headerMenu}', [HeaderMenuController::class, 'update'])->name('header.update');
     Route::delete('header/{headerMenu}', [HeaderMenuController::class, 'destroy'])->name('header.destroy');
+
+    Route::get('header-sections', [HeaderSectionController::class, 'index'])->name('header-sections.index');
+    Route::get('header-sections/create', [HeaderSectionController::class, 'create'])->name('header-sections.create');
+    Route::post('header-sections', [HeaderSectionController::class, 'store'])->name('header-sections.store');
+    Route::get('header-sections/{headerSection}/edit', [HeaderSectionController::class, 'edit'])->name('header-sections.edit');
+    Route::put('header-sections/{headerSection}', [HeaderSectionController::class, 'update'])->name('header-sections.update');
+    Route::delete('header-sections/{headerSection}', [HeaderSectionController::class, 'destroy'])->name('header-sections.destroy');
+
+    Route::get('intro-slider', [IntroSliderController::class, 'index'])->name('intro-slider.index');
+    Route::get('intro-slider/create', [IntroSliderController::class, 'create'])->name('intro-slider.create');
+    Route::post('intro-slider', [IntroSliderController::class, 'store'])->name('intro-slider.store');
+    Route::get('intro-slider/{introSlider}/edit', [IntroSliderController::class, 'edit'])->name('intro-slider.edit');
+    Route::put('intro-slider/{introSlider}', [IntroSliderController::class, 'update'])->name('intro-slider.update');
+    Route::delete('intro-slider/{introSlider}', [IntroSliderController::class, 'destroy'])->name('intro-slider.destroy');
 });
+
+// Product details route (publicly accessible)
+Route::get('product/{slug}', function ($slug) {
+    return view('product.show', compact('slug'));
+})->name('product.show');

@@ -253,9 +253,21 @@
         </div>
         <ul class="sidebar-nav">
             <li>
-                <a href="{{ route('admin.header.index') }}" class="sidebar-nav-item {{ request()->is('admin/header*') ? 'active' : '' }}">
+                <a href="{{ route('admin.header.index') }}" class="sidebar-nav-item {{ request()->is('admin/header*') && !request()->is('admin/header-sections*') ? 'active' : '' }}">
                     <i class="fas fa-bars"></i>
                     Menu Management
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.header-sections.index') }}" class="sidebar-nav-item {{ request()->is('admin/header-sections*') ? 'active' : '' }}">
+                    <i class="fas fa-layer-group"></i>
+                    Header Sections
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.intro-slider.index') }}" class="sidebar-nav-item {{ request()->is('admin/intro-slider*') ? 'active' : '' }}">
+                    <i class="fas fa-image"></i>
+                    Intro Slider
                 </a>
             </li>
             <li>
