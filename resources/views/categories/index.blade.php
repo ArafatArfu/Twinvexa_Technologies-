@@ -30,18 +30,18 @@
                 <div class="row">
                     @foreach($categories as $category)
                         @php
-                            $image = $category->image_url ?: asset('assets/images/categories/placeholder.jpg');
+                            $image = $category->image_url ?: asset('assets/images/demos/demo-4/cats/1.png');
                         @endphp
                         <div class="col-6 col-md-4 col-lg-3 mb-4">
-                            <div class="category-card text-center">
-                                <a href="{{ route('category.show', $category->slug) }}" class="d-block text-decoration-none">
-                                    <div class="category-img mb-3">
-                                        <img src="{{ $image }}" alt="{{ $category->name }}" class="img-fluid rounded">
-                                    </div>
-                                    <h3 class="category-name">{{ $category->name }}</h3>
-                                    <p class="text-muted">{{ $category->product_count }} Products</p>
-                                </a>
-                            </div>
+                            <a href="{{ route('category.show', $category->slug) }}" class="d-block text-decoration-none category-card">
+                                <div class="category-img mb-3">
+                                    <span class="category-img-wrapper">
+                                        <img src="{{ $image }}" alt="{{ $category->name }}" loading="lazy">
+                                    </span>
+                                </div>
+                                <h3 class="category-name text-center">{{ $category->name }}</h3>
+                                <p class="text-muted text-center">{{ $category->product_count }} Products</p>
+                            </a>
                         </div>
                     @endforeach
                 </div>
@@ -50,3 +50,47 @@
     </div>
 </main>
 @endsection
+
+@push('styles')
+<style>
+.category-img-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    max-height: 160px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.category-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+.category-card {
+    color: inherit;
+}
+.category-card:hover {
+    color: inherit;
+}
+.category-name {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+@media (max-width: 575px) {
+    .category-img-wrapper {
+        aspect-ratio: 16 / 10;
+        max-height: 120px;
+        padding: 8px;
+    }
+    .category-name {
+        font-size: 0.9rem;
+    }
+}
+</style>
+@endpush
