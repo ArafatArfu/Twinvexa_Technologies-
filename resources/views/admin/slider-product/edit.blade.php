@@ -38,9 +38,12 @@
         <li class="nav-item">
             <button class="nav-link" id="description-tab" data-bs-toggle="pill" href="#description" type="button">Description</button>
         </li>
+        {{-- Specifications hidden for now --}}
+        {{--
         <li class="nav-item">
             <button class="nav-link" id="specs-tab" data-bs-toggle="pill" href="#specs" type="button">Specifications</button>
         </li>
+        --}}
         <li class="nav-item">
             <button class="nav-link" id="additional-tab" data-bs-toggle="pill" href="#additional" type="button">Additional Info</button>
         </li>
@@ -73,6 +76,7 @@
                                 @endforeach
                             </select>
                             @error('category_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="add-category-btn">+ Add New Category</button>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="brand_id" class="form-label">Brand</label>
@@ -83,6 +87,7 @@
                                 @endforeach
                             </select>
                             @error('brand_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="add-brand-btn">+ Add New Brand</button>
                         </div>
                     </div>
 
@@ -268,6 +273,8 @@
             </div>
         </div>
 
+        {{-- Specifications hidden for now --}}
+        {{--
         <div class="tab-pane fade" id="specs">
             <div class="card">
                 <div class="card-header">Technical Specifications</div>
@@ -296,6 +303,7 @@
                 </div>
             </div>
         </div>
+        --}}
 
         <div class="tab-pane fade" id="additional">
             <div class="card">
@@ -357,6 +365,52 @@
         <a href="{{ route('admin.intro-slider.index') }}" class="btn btn-secondary">Back to List</a>
     </div>
 </form>
+
+{{-- Category Modal --}}
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="modal-category-name" class="form-label">Category Name <span class="text-danger">*</span></label>
+                    <input type="text" id="modal-category-name" class="form-control" placeholder="Enter category name">
+                    <div id="category-error" class="invalid-feedback d-none">Category name is required.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="save-category-modal">Save Category</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Brand Modal --}}
+<div class="modal fade" id="brandModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Brand</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="modal-brand-name" class="form-label">Brand Name <span class="text-danger">*</span></label>
+                    <input type="text" id="modal-brand-name" class="form-control" placeholder="Enter brand name">
+                    <div id="brand-error" class="invalid-feedback d-none">Brand name is required.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="save-brand-modal">Save Brand</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -430,6 +484,87 @@
 
         $(document).on('click', '.remove-spec', function() {
             $(this).closest('.spec-row').remove();
+        });
+
+        $('#add-category-btn').on('click', function() {
+            var modal = new bootstrap.Modal(document.getElementById('categoryModal'));
+            modal.show();
+        });
+        $('#add-brand-btn').on('click', function() {
+            var modal = new bootstrap.Modal(document.getElementById('brandModal'));
+            modal.show();
+        });
+
+        $('#save-category-modal').on('click', function() {
+            var name = $('#modal-category-name').val().trim();
+            var errorDiv = $('#category-error');
+            if (!name) {
+                errorDiv.removeClass('d-none');
+                $('#modal-category-name').addClass('is-invalid');
+                return;
+            }
+            errorDiv.addClass('d-none');
+            $('#modal-category-name').removeClass('is-invalid');
+
+            var btn = $(this);
+            btn.prop('disabled', true).text('Saving...');
+
+            $.ajax({
+                url: "{{ route('admin.categories.ajax.store') }}",
+                method: 'POST',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                contentType: 'application/json',
+                data: JSON.stringify({name: name}),
+                success: function(data) {
+                    var option = new Option(data.name, data.id, true, true);
+                    $('#category_id').append(option).val(data.id);
+                    $('#modal-category-name').val('');
+                    const categoryModalEl = document.getElementById('categoryModal');
+                    const categoryModalInstance = bootstrap.Modal.getInstance(categoryModalEl) || new bootstrap.Modal(categoryModalEl);
+                    categoryModalInstance.hide();
+                    btn.prop('disabled', false).text('Save Category');
+                },
+                error: function() {
+                    alert('Failed to create category. Please try again.');
+                    btn.prop('disabled', false).text('Save Category');
+                }
+            });
+        });
+
+        $('#save-brand-modal').on('click', function() {
+            var name = $('#modal-brand-name').val().trim();
+            var errorDiv = $('#brand-error');
+            if (!name) {
+                errorDiv.removeClass('d-none');
+                $('#modal-brand-name').addClass('is-invalid');
+                return;
+            }
+            errorDiv.addClass('d-none');
+            $('#modal-brand-name').removeClass('is-invalid');
+
+            var btn = $(this);
+            btn.prop('disabled', true).text('Saving...');
+
+            $.ajax({
+                url: "{{ route('admin.brands.ajax.store') }}",
+                method: 'POST',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                contentType: 'application/json',
+                data: JSON.stringify({name: name}),
+                success: function(data) {
+                    var option = new Option(data.name, data.id, true, true);
+                    $('#brand_id').append(option).val(data.id);
+                    $('#modal-brand-name').val('');
+                    const brandModalEl = document.getElementById('brandModal');
+                    const brandModalInstance = bootstrap.Modal.getInstance(brandModalEl) || new bootstrap.Modal(brandModalEl);
+                    brandModalInstance.hide();
+                    btn.prop('disabled', false).text('Save Brand');
+                },
+                error: function() {
+                    alert('Failed to create brand. Please try again.');
+                    btn.prop('disabled', false).text('Save Brand');
+                }
+            });
         });
     });
 })(jQuery);

@@ -25,6 +25,9 @@ class Product extends Model
         'is_sale',
         'category_id',
         'brand_id',
+        'shipping_information',
+        'return_policy',
+        'display_order',
     ];
 
     protected $casts = [

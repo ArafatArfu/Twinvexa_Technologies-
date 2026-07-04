@@ -236,9 +236,12 @@
                     <li class="nav-item">
                         <a class="nav-link active" id="description-tab" data-bs-toggle="pill" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
                     </li>
+                    {{-- Specifications hidden for now --}}
+                    {{--
                     <li class="nav-item">
                         <a class="nav-link" id="specifications-tab" data-bs-toggle="pill" href="#specifications" role="tab" aria-controls="specifications" aria-selected="false">Specifications</a>
                     </li>
+                    --}}
                     <li class="nav-item">
                         <a class="nav-link" id="additional-information-tab" data-bs-toggle="pill" href="#additional-information" role="tab" aria-controls="additional-information" aria-selected="false">Additional Information</a>
                     </li>
@@ -259,6 +262,8 @@
                         </div>
                     </div>
 
+                    {{-- Specifications hidden for now --}}
+                    {{--
                     <div class="tab-pane fade" id="specifications" role="tabpanel" aria-labelledby="specifications-tab">
                         <div class="product-specification">
                             @if($product->specifications->isNotEmpty())
@@ -277,6 +282,7 @@
                             @endif
                         </div>
                     </div>
+                    --}}
 
                     <div class="tab-pane fade" id="additional-information" role="tabpanel" aria-labelledby="additional-information-tab">
                         <div class="product-additional-info">

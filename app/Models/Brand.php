@@ -27,4 +27,9 @@ class Brand extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('name');
+    }
 }

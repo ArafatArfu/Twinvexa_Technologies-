@@ -271,6 +271,18 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admin.categories.index') }}" class="sidebar-nav-item {{ request()->is('admin/categories*') ? 'active' : '' }}">
+                    <i class="fas fa-th-large"></i>
+                    Manage Explore Popular Categories
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.products.index') }}" class="sidebar-nav-item {{ request()->is('admin/products*') ? 'active' : '' }}">
+                    <i class="fas fa-box-open"></i>
+                    Manage Category Products
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admin.navbar.settings') }}" class="sidebar-nav-item {{ request()->is('admin/navbar/settings*') ? 'active' : '' }}">
                     <i class="fas fa-cog"></i>
                     Header Settings
@@ -325,5 +337,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    @stack('scripts')
 </body>
 </html>

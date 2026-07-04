@@ -12,6 +12,10 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CompareController;
 use App\Http\Controllers\SliderProductController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\PublicCategoryController;
 
 Route::get('/', function () {
     return view('index-4');
@@ -89,11 +93,41 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     Route::get('intro-slider/{introSlider}/product', [SliderProductController::class, 'edit'])->name('slider-product.edit');
     Route::put('intro-slider/{introSlider}/product', [SliderProductController::class, 'update'])->name('slider-product.update');
+
+    Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+    Route::get('categories/options', [CategoryController::class, 'options'])->name('categories.options');
+    Route::post('categories/ajax', [CategoryController::class, 'ajaxStore'])->name('categories.ajax.store');
+
+    Route::get('brands', [BrandController::class, 'index'])->name('brands.index');
+    Route::get('brands/create', [BrandController::class, 'create'])->name('brands.create');
+    Route::post('brands', [BrandController::class, 'store'])->name('brands.store');
+    Route::get('brands/{brand}/edit', [BrandController::class, 'edit'])->name('brands.edit');
+    Route::put('brands/{brand}', [BrandController::class, 'update'])->name('brands.update');
+    Route::delete('brands/{brand}', [BrandController::class, 'destroy'])->name('brands.destroy');
+
+    Route::get('brands/options', [BrandController::class, 'options'])->name('brands.options');
+    Route::post('brands/ajax', [BrandController::class, 'ajaxStore'])->name('brands.ajax.store');
+
+    Route::get('products', [AdminProductController::class, 'index'])->name('products.index');
+    Route::get('products/create', [AdminProductController::class, 'create'])->name('products.create');
+    Route::post('products', [AdminProductController::class, 'store'])->name('products.store');
+    Route::get('products/{product}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
+    Route::put('products/{product}', [AdminProductController::class, 'update'])->name('products.update');
+    Route::delete('products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
 });
 
 Route::get('intro-sliders', [IntroSliderController::class, 'publicIndex'])->name('intro-sliders.index');
 Route::get('intro-slider/{slug}', [IntroSliderController::class, 'publicShow'])->name('intro-slider.show');
 Route::post('intro-slider/{slug}/review', [SliderProductController::class, 'review'])->name('slider-product.review.store');
+
+Route::get('categories', [PublicCategoryController::class, 'index'])->name('category.index');
+Route::get('category/{slug}', [PublicCategoryController::class, 'show'])->name('category.show');
 
 Route::fallback(function () {
     return view('errors.404');

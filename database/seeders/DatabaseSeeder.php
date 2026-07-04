@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             HeaderMenuSeeder::class,
             NavbarSettingsSeeder::class,
             IntroSliderSeeder::class,
+            CategorySeeder::class,
             ProductSeeder::class,
         ]);
 
