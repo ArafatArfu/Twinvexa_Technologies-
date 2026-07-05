@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BannerProductController;
+use App\Http\Controllers\Admin\NewArrivalController;
 use App\Http\Controllers\PublicCategoryController;
 
 Route::get('/', function () {
@@ -136,6 +137,13 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('banner-products/{bannerProduct}/edit', [BannerProductController::class, 'edit'])->name('banner-products.edit');
     Route::put('banner-products/{bannerProduct}', [BannerProductController::class, 'update'])->name('banner-products.update');
     Route::delete('banner-products/{bannerProduct}', [BannerProductController::class, 'destroy'])->name('banner-products.destroy');
+
+    Route::get('new-arrivals', [NewArrivalController::class, 'index'])->name('new-arrivals.index');
+    Route::get('new-arrivals/create', [NewArrivalController::class, 'create'])->name('new-arrivals.create');
+    Route::post('new-arrivals', [NewArrivalController::class, 'store'])->name('new-arrivals.store');
+    Route::get('new-arrivals/{product}/edit', [NewArrivalController::class, 'edit'])->name('new-arrivals.edit');
+    Route::put('new-arrivals/{product}', [NewArrivalController::class, 'update'])->name('new-arrivals.update');
+    Route::delete('new-arrivals/{product}', [NewArrivalController::class, 'destroy'])->name('new-arrivals.destroy');
 });
 
 Route::get('intro-sliders', [IntroSliderController::class, 'publicIndex'])->name('intro-sliders.index');

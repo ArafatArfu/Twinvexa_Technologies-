@@ -252,9 +252,12 @@
                         <li class="nav-item">
                             <a class="nav-link active" id="description-tab" data-bs-toggle="pill" href="#description" role="tab">Description</a>
                         </li>
+                        {{-- Specifications hidden for now --}}
+                        {{--
                         <li class="nav-item">
                             <a class="nav-link" id="specifications-tab" data-bs-toggle="pill" href="#specifications" role="tab">Specifications</a>
                         </li>
+                        --}}
                         <li class="nav-item">
                             <a class="nav-link" id="additional-information-tab" data-bs-toggle="pill" href="#additional-information" role="tab">Additional Information</a>
                         </li>
@@ -276,6 +279,8 @@
                         </div>
 
                         <div class="tab-pane fade" id="specifications" role="tabpanel">
+                            {{-- Specifications hidden for now --}}
+                            {{--
                             <div class="product-specification">
                                 @if($product->specifications->isNotEmpty())
                                     <table class="table table-bordered table-striped">
@@ -292,6 +297,7 @@
                                     <p class="text-muted">No specifications available for this product.</p>
                                 @endif
                             </div>
+                            --}}
                         </div>
 
                         <div class="tab-pane fade" id="additional-information" role="tabpanel">

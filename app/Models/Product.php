@@ -23,6 +23,7 @@ class Product extends Model
         'is_featured',
         'is_new',
         'is_sale',
+        'is_new_arrival',
         'category_id',
         'brand_id',
         'shipping_information',
@@ -36,6 +37,21 @@ class Product extends Model
         'is_new' => 'boolean',
         'is_sale' => 'boolean',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function (Product $product) {
+            if (empty($product->slug)) {
+                $product->slug = \Illuminate\Support\Str::slug($product->name);
+            }
+        });
+
+        static::updating(function (Product $product) {
+            if (empty($product->slug)) {
+                $product->slug = \Illuminate\Support\Str::slug($product->name);
+            }
+        });
+    }
 
     public function category(): BelongsTo
     {

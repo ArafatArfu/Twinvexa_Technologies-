@@ -295,6 +295,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admin.new-arrivals.index') }}" class="sidebar-nav-item {{ request()->is('admin/new-arrivals*') ? 'active' : '' }}">
+                    <i class="fas fa-star"></i>
+                    Manage New Arrivals
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admin.navbar.settings') }}" class="sidebar-nav-item {{ request()->is('admin/navbar/settings*') ? 'active' : '' }}">
                     <i class="fas fa-cog"></i>
                     Header Settings

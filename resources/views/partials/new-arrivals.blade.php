@@ -1,52 +1,10 @@
 @php
-$products = [
-    [
-        'image' => 'assets/images/demos/demo-4/products/product-1.jpg',
-        'category' => 'Laptops',
-        'title' => 'MacBook Pro 13" Display, i5',
-        'price' => '$1,199.99',
-        'rating' => 100,
-        'reviews' => 4,
-        'labels' => [['type' => 'top', 'text' => 'Top']],
-    ],
-    [
-        'image' => 'assets/images/demos/demo-4/products/product-2.jpg',
-        'category' => 'Audio',
-        'title' => 'Bose - SoundLink Bluetooth Speaker',
-        'price' => '$79.99',
-        'rating' => 60,
-        'reviews' => 6,
-    ],
-    [
-        'image' => 'assets/images/demos/demo-4/products/product-3.jpg',
-        'category' => 'Tablets',
-        'title' => 'Apple - 11 Inch iPad Pro with Wi-Fi 256GB',
-        'price' => '$899.99',
-        'rating' => 80,
-        'reviews' => 4,
-        'labels' => [['type' => 'new', 'text' => 'New']],
-        'colors' => ['#edd2c8', '#eaeaec', '#333333'],
-    ],
-    [
-        'image' => 'assets/images/demos/demo-4/products/product-4.jpg',
-        'category' => 'Cell Phone',
-        'title' => 'Google - Pixel 3 XL 128GB',
-        'price' => '$35.41',
-        'oldPrice' => '$41.67',
-        'rating' => 100,
-        'reviews' => 10,
-        'labels' => [['type' => 'top', 'text' => 'Top'], ['type' => 'sale', 'text' => 'Sale']],
-        'colors' => ['#edd2c8', '#eaeaec', '#333333'],
-    ],
-    [
-        'image' => 'assets/images/demos/demo-4/products/product-5.jpg',
-        'category' => 'TV & Home Theater',
-        'title' => 'Samsung - 55" Class LED 2160p Smart',
-        'price' => '$899.99',
-        'rating' => 60,
-        'reviews' => 5,
-    ],
-];
+    $products = \App\Models\Product::where('is_new_arrival', true)
+        ->where('is_active', true)
+        ->with(['category', 'brand', 'images'])
+        ->orderByDesc('display_order')
+        ->orderByDesc('created_at')
+        ->get();
 @endphp
 
 <div class="container new-arrivals">
@@ -83,16 +41,33 @@ $products = [
                     }
                 }'>
                 @foreach($products as $product)
+                    @php
+                        $image = $product->image
+                            ? (str_starts_with($product->image, 'assets/') ? asset($product->image) : asset('storage/' . $product->image))
+                            : asset('assets/images/products/product-15.jpg');
+                        $link = route('products.show', $product->slug);
+                        $categoryName = $product->category->name ?? '';
+                        $oldPrice = $product->old_price ? '$' . number_format((float) $product->old_price, 2) : '';
+                        $rating = (int) round(($product->average_rating / 5) * 100);
+                        $reviews = $product->review_count;
+                        $labels = [];
+                        if ($product->is_new) {
+                            $labels[] = ['type' => 'new', 'text' => 'New'];
+                        }
+                        if ($product->is_sale || ($product->old_price && $product->old_price > $product->price)) {
+                            $labels[] = ['type' => 'sale', 'text' => 'Sale'];
+                        }
+                    @endphp
                     <x-product-card 
-                        :image="$product['image']" 
-                        :category="$product['category']" 
-                        :title="$product['title']" 
-                        :price="$product['price']"
-                        :old-price="$product['oldPrice'] ?? ''"
-                        :rating="$product['rating']"
-                        :reviews="$product['reviews']"
-                        :labels="$product['labels'] ?? []"
-                        :colors="$product['colors'] ?? []" />
+                        :image="$image" 
+                        :category="$categoryName" 
+                        :title="$product->name" 
+                        :price="'$' . number_format((float) $product->price, 2)"
+                        :old-price="$oldPrice"
+                        :rating="$rating"
+                        :reviews="$reviews"
+                        :labels="$labels"
+                        :link="$link" />
                 @endforeach
             </div>
         </div>
