@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\ProductVariant;
 use App\Models\CartItem;
-use App\Models\CompareItem;
+use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
+    public function __construct(protected CartService $cart) {}
+
     public function add(Request $request, Product $product)
     {
         $request->validate([
@@ -22,101 +22,54 @@ class CartController extends Controller
         $quantity = (int) $request->input('quantity', 1);
         $variantId = $request->input('variant_id');
 
-        if ($variantId) {
-            $variant = ProductVariant::where('id', $variantId)
-                ->where('product_id', $product->id)
-                ->firstOrFail();
-            $stock = $variant->quantity;
-            $price = $variant->price ?? $product->price;
-        } else {
-            $stock = $product->quantity;
-            $price = $product->price;
-        }
-
-        if ($stock < $quantity) {
-            return back()->withErrors(['quantity' => 'Requested quantity exceeds available stock.']);
-        }
-
-        $userId = Auth::id();
-
-        DB::transaction(function () use ($userId, $product, $variantId, $quantity, $stock) {
-            $cartItem = CartItem::where('user_id', $userId)
-                ->where('product_id', $product->id)
-                ->where('product_variant_id', $variantId)
-                ->first();
-
-            if ($cartItem) {
-                $newQty = $cartItem->quantity + $quantity;
-                if ($newQty > $stock) {
-                    throw new \Exception('Total quantity exceeds available stock.');
-                }
-                $cartItem->update(['quantity' => $newQty]);
-            } else {
-                CartItem::create([
-                    'user_id' => $userId,
-                    'product_id' => $product->id,
-                    'product_variant_id' => $variantId,
-                    'quantity' => $quantity,
-                ]);
-            }
-        });
-
-        $count = CartItem::where('user_id', $userId)->sum('quantity');
+        $result = $this->cart->add($product, $quantity, $variantId);
 
         if ($request->ajax() || $request->wantsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Product added to cart successfully.',
-                'cart_count' => $count,
-            ]);
+            return response()->json($result);
         }
 
-        return redirect()->route('cart.index')->with('success', 'Product added to cart successfully.');
+        if (!$result['success']) {
+            return back()->withErrors(['quantity' => $result['message']]);
+        }
+
+        return redirect()->route('cart.index')->with('success', $result['message']);
     }
 
     public function index(Request $request)
     {
-        $userId = Auth::id();
-        $cartItems = CartItem::where('user_id', $userId)
-            ->with(['product', 'variant'])
-            ->get();
+        $cartItems = $this->cart->getItems();
+        $subtotal = $this->cart->getSubtotal();
 
-        return view('cart.index', compact('cartItems'));
+        return view('cart.index', compact('cartItems', 'subtotal'));
     }
 
-    public function destroy(CartItem $cartItem): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, CartItem $cartItem)
     {
-        $this->authorizeCart($cartItem);
-        $cartItem->delete();
-
-        return back()->with('success', 'Item removed from cart.');
-    }
-
-    public function update(Request $request, CartItem $cartItem): \Illuminate\Http\RedirectResponse
-    {
-        $this->authorizeCart($cartItem);
-
         $request->validate([
             'quantity' => 'required|integer|min:1',
         ]);
 
-        $product = $cartItem->product;
-        $variant = $cartItem->variant;
-        $stock = $variant ? $variant->quantity : $product->quantity;
+        $result = $this->cart->update($cartItem, (int) $request->quantity);
 
-        if ((int) $request->quantity > $stock) {
-            return back()->withErrors(['quantity' => 'Requested quantity exceeds available stock.']);
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json($result);
         }
 
-        $cartItem->update(['quantity' => (int) $request->quantity]);
+        if (!$result['success']) {
+            return back()->withErrors(['quantity' => $result['message']]);
+        }
 
-        return back()->with('success', 'Cart updated successfully.');
+        return back()->with('success', $result['message']);
     }
 
-    private function authorizeCart(CartItem $cartItem): void
+    public function destroy(Request $request, CartItem $cartItem)
     {
-        if ($cartItem->user_id !== Auth::id()) {
-            abort(403);
+        $result = $this->cart->remove($cartItem);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json($result);
         }
+
+        return back()->with('success', $result['message']);
     }
 }

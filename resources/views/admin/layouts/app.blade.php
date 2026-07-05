@@ -301,6 +301,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admin.orders.index') }}" class="sidebar-nav-item {{ request()->is('admin/orders*') ? 'active' : '' }}">
+                    <i class="fas fa-shopping-cart"></i>
+                    Order Management
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admin.navbar.settings') }}" class="sidebar-nav-item {{ request()->is('admin/navbar/settings*') ? 'active' : '' }}">
                     <i class="fas fa-cog"></i>
                     Header Settings

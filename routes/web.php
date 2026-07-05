@@ -12,13 +12,16 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CompareController;
 use App\Http\Controllers\SliderProductController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BannerProductController;
 use App\Http\Controllers\Admin\NewArrivalController;
+use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\PublicCategoryController;
+use App\Http\Controllers\PublicNewArrivalController;
 
 Route::get('/', function () {
     return view('index-4');
@@ -26,6 +29,9 @@ Route::get('/', function () {
 
 Route::get('product/{slug}', [ProductController::class, 'show'])
     ->name('products.show');
+
+Route::get('new-arrival/{slug}', [PublicNewArrivalController::class, 'show'])
+    ->name('new-arrivals.show');
 
 Route::post('product/{slug}/review', [ProductController::class, 'review'])
     ->name('products.review.store');
@@ -39,6 +45,15 @@ Route::middleware('auth')->prefix('cart')->name('cart.')->group(function () {
 
 Route::middleware('auth')->prefix('wishlist')->name('wishlist.')->group(function () {
     Route::post('toggle/{product}', [WishlistController::class, 'toggle'])->name('toggle');
+    Route::get('/', [WishlistController::class, 'index'])->name('index');
+    Route::delete('{product}', [WishlistController::class, 'destroy'])->name('destroy');
+    Route::post('move-to-cart/{product}', [WishlistController::class, 'moveToCart'])->name('move-to-cart');
+});
+
+Route::middleware('auth')->prefix('checkout')->name('checkout.')->group(function () {
+    Route::get('/', [CheckoutController::class, 'index'])->name('index');
+    Route::post('/', [CheckoutController::class, 'store'])->name('store');
+    Route::get('confirmation/{orderNumber}', [CheckoutController::class, 'confirmation'])->name('confirmation');
 });
 
 Route::middleware('auth')->prefix('compare')->name('compare.')->group(function () {
@@ -144,6 +159,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('new-arrivals/{product}/edit', [NewArrivalController::class, 'edit'])->name('new-arrivals.edit');
     Route::put('new-arrivals/{product}', [NewArrivalController::class, 'update'])->name('new-arrivals.update');
     Route::delete('new-arrivals/{product}', [NewArrivalController::class, 'destroy'])->name('new-arrivals.destroy');
+
+    Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+    Route::put('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
+    Route::delete('orders/{order}', [AdminOrderController::class, 'destroy'])->name('orders.destroy');
 });
 
 Route::get('intro-sliders', [IntroSliderController::class, 'publicIndex'])->name('intro-sliders.index');

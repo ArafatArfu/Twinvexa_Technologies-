@@ -16,16 +16,15 @@
                             $logoUrl = asset('storage/' . $settings->logo);
                         }
                     }
-                    $logoWidth = $settings->logo_width ?? 65;
-                    $logoHeight = $settings->logo_height ?? 16;
+                    $logoWidth = $settings->logo_width ?? 480;
+                    $logoHeight = $settings->logo_height ?? 128;
                 @endphp
                 @if($logoUrl)
                     <img src="{{ $logoUrl }}" alt="{{ $settings->logo_text ?? 'Logo' }}" width="{{ $logoWidth }}" height="{{ $logoHeight }}" style="max-width: none; height: auto; object-fit: contain; flex-shrink: 0; image-rendering: auto;">
                 @else
-                    <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" width="65" height="16" style="max-width: none; height: auto; object-fit: contain; flex-shrink: 0; image-rendering: auto;">
-                @endif
-                @if($settings && $settings->logo_text)
-                    <span class="logo-name" style="white-space: nowrap; font-size: 1.8rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1; background: linear-gradient(to right, #39f, #1d84ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent;">{{ $settings->logo_text }}</span>
+                    @if($settings && $settings->logo_text)
+                        <span class="logo-name" style="white-space: nowrap; font-size: 1.8rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1; background: linear-gradient(to right, #39f, #1d84ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent;">{{ $settings->logo_text }}</span>
+                    @endif
                 @endif
             </a>
 

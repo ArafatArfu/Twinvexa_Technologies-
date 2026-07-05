@@ -125,4 +125,15 @@ class Product extends Model
     {
         return $this->quantity > 0;
     }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if (!$this->image) {
+            return null;
+        }
+
+        return str_starts_with($this->image, 'assets/')
+            ? asset($this->image)
+            : (\Illuminate\Support\Facades\Storage::disk('public')->exists($this->image) ? asset('storage/' . $this->image) : null);
+    }
 }

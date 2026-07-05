@@ -3,43 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Wishlist;
+use App\Services\WishlistService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class WishlistController extends Controller
 {
+    public function __construct(protected WishlistService $wishlist) {}
+
     public function toggle(Request $request, Product $product)
     {
-        $userId = Auth::id();
-        $wishlistItem = Wishlist::where('user_id', $userId)
-            ->where('product_id', $product->id)
-            ->first();
-
-        if ($wishlistItem) {
-            $wishlistItem->delete();
-            $message = 'Product removed from wishlist.';
-            $added = false;
-        } else {
-            Wishlist::create([
-                'user_id' => $userId,
-                'product_id' => $product->id,
-            ]);
-            $message = 'Product added to wishlist.';
-            $added = true;
-        }
-
-        $count = Wishlist::where('user_id', $userId)->count();
+        $result = $this->wishlist->toggle($product);
 
         if ($request->ajax() || $request->wantsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => $message,
-                'added' => $added,
-                'wishlist_count' => $count,
-            ]);
+            return response()->json($result);
         }
 
-        return back()->with('success', $message);
+        return back()->with('success', $result['message']);
+    }
+
+    public function index(Request $request)
+    {
+        $items = $this->wishlist->getItems();
+
+        return view('wishlist.index', compact('items'));
+    }
+
+    public function destroy(Request $request, Product $product)
+    {
+        $result = $this->wishlist->remove($product);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return back()->with('success', $result['message']);
+    }
+
+    public function moveToCart(Request $request, Product $product)
+    {
+        $request->validate([
+            'quantity' => 'nullable|integer|min:1',
+        ]);
+
+        $quantity = (int) ($request->input('quantity', 1));
+        $result = $this->wishlist->moveToCart($product, $quantity);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return back()->with('success', $result['message']);
     }
 }
