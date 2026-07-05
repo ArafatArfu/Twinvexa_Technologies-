@@ -56,7 +56,6 @@
                 </td>
                 <td>
                     <div class="d-flex flex-wrap gap-1">
-                        <a href="{{ route('category.show', $category->slug) }}" class="btn btn-sm btn-info" target="_blank">View</a>
                         <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-warning">Edit</a>
                         <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">
                             @csrf

@@ -15,6 +15,8 @@ use App\Http\Controllers\SliderProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\BannerProductController;
 use App\Http\Controllers\PublicCategoryController;
 
 Route::get('/', function () {
@@ -120,6 +122,20 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('products/{product}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
     Route::put('products/{product}', [AdminProductController::class, 'update'])->name('products.update');
     Route::delete('products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
+
+    Route::get('banners', [BannerController::class, 'index'])->name('banners.index');
+    Route::get('banners/create', [BannerController::class, 'create'])->name('banners.create');
+    Route::post('banners', [BannerController::class, 'store'])->name('banners.store');
+    Route::get('banners/{banner}/edit', [BannerController::class, 'edit'])->name('banners.edit');
+    Route::put('banners/{banner}', [BannerController::class, 'update'])->name('banners.update');
+    Route::delete('banners/{banner}', [BannerController::class, 'destroy'])->name('banners.destroy');
+
+    Route::get('banner-products', [BannerProductController::class, 'index'])->name('banner-products.index');
+    Route::get('banner-products/create', [BannerProductController::class, 'create'])->name('banner-products.create');
+    Route::post('banner-products', [BannerProductController::class, 'store'])->name('banner-products.store');
+    Route::get('banner-products/{bannerProduct}/edit', [BannerProductController::class, 'edit'])->name('banner-products.edit');
+    Route::put('banner-products/{bannerProduct}', [BannerProductController::class, 'update'])->name('banner-products.update');
+    Route::delete('banner-products/{bannerProduct}', [BannerProductController::class, 'destroy'])->name('banner-products.destroy');
 });
 
 Route::get('intro-sliders', [IntroSliderController::class, 'publicIndex'])->name('intro-sliders.index');
@@ -128,6 +144,8 @@ Route::post('intro-slider/{slug}/review', [SliderProductController::class, 'revi
 
 Route::get('categories', [PublicCategoryController::class, 'index'])->name('category.index');
 Route::get('category/{slug}', [PublicCategoryController::class, 'show'])->name('category.show');
+
+Route::get('banner-product/{slug}', \App\Http\Controllers\PublicBannerProductController::class)->name('banner-product.show');
 
 Route::fallback(function () {
     return view('errors.404');

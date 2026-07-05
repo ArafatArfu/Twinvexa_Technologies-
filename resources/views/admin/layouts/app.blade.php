@@ -283,6 +283,18 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admin.banners.index') }}" class="sidebar-nav-item {{ request()->is('admin/banners*') ? 'active' : '' }}">
+                    <i class="fas fa-image"></i>
+                    Banner Management
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.banner-products.index') }}" class="sidebar-nav-item {{ request()->is('admin/banner-products*') ? 'active' : '' }}">
+                    <i class="fas fa-tags"></i>
+                    Manage Banner Product Details
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admin.navbar.settings') }}" class="sidebar-nav-item {{ request()->is('admin/navbar/settings*') ? 'active' : '' }}">
                     <i class="fas fa-cog"></i>
                     Header Settings

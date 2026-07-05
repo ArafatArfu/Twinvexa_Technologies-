@@ -57,7 +57,6 @@
                 </td>
                 <td>
                     <div class="d-flex flex-wrap gap-1">
-                        <a href="{{ route('intro-slider.show', $slider->slug) }}" class="btn btn-sm btn-info" target="_blank">View Product Page</a>
                         <a href="{{ route('admin.slider-product.edit', $slider) }}" class="btn btn-sm btn-primary">Manage Product Details</a>
                         <a href="{{ route('admin.intro-slider.edit', $slider) }}" class="btn btn-sm btn-warning">Edit Slider</a>
                         <form action="{{ route('admin.intro-slider.destroy', $slider) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">

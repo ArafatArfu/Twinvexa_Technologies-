@@ -85,7 +85,6 @@
                 </td>
                 <td>
                     <div class="d-flex flex-wrap gap-1">
-                        <a href="{{ route('products.show', $product->slug) }}" class="btn btn-sm btn-info" target="_blank">View Page</a>
                         <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-sm btn-warning">Edit</a>
                         <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">
                             @csrf

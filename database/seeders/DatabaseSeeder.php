@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             IntroSliderSeeder::class,
             CategorySeeder::class,
             ProductSeeder::class,
+            BannerSeeder::class,
+            BannerProductSeeder::class,
         ]);
 
         User::factory()->create([
