@@ -21,8 +21,10 @@ use App\Http\Controllers\Admin\BannerProductController;
 use App\Http\Controllers\Admin\NewArrivalController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminCtaSectionController;
+use App\Http\Controllers\Admin\DealController;
 use App\Http\Controllers\PublicCategoryController;
 use App\Http\Controllers\PublicNewArrivalController;
+use App\Http\Controllers\PublicDealController;
 
 Route::get('/', function () {
     return view('index-4');
@@ -33,6 +35,12 @@ Route::get('product/{slug}', [ProductController::class, 'show'])
 
 Route::get('new-arrival/{slug}', [PublicNewArrivalController::class, 'show'])
     ->name('new-arrivals.show');
+
+Route::get('deal/{slug}', [PublicDealController::class, 'show'])
+    ->name('deals.show');
+
+Route::get('deals', [PublicDealController::class, 'index'])
+    ->name('deals.index');
 
 Route::post('product/{slug}/review', [ProductController::class, 'review'])
     ->name('products.review.store');
@@ -160,6 +168,13 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('new-arrivals/{product}/edit', [NewArrivalController::class, 'edit'])->name('new-arrivals.edit');
     Route::put('new-arrivals/{product}', [NewArrivalController::class, 'update'])->name('new-arrivals.update');
     Route::delete('new-arrivals/{product}', [NewArrivalController::class, 'destroy'])->name('new-arrivals.destroy');
+
+    Route::get('deals', [DealController::class, 'index'])->name('deals.index');
+    Route::get('deals/create', [DealController::class, 'create'])->name('deals.create');
+    Route::post('deals', [DealController::class, 'store'])->name('deals.store');
+    Route::get('deals/{product}/edit', [DealController::class, 'edit'])->name('deals.edit');
+    Route::put('deals/{product}', [DealController::class, 'update'])->name('deals.update');
+    Route::delete('deals/{product}', [DealController::class, 'destroy'])->name('deals.destroy');
 
     Route::get('cta-sections', [AdminCtaSectionController::class, 'index'])->name('cta-sections.index');
     Route::get('cta-sections/create', [AdminCtaSectionController::class, 'create'])->name('cta-sections.create');

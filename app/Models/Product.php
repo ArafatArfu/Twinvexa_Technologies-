@@ -24,6 +24,10 @@ class Product extends Model
         'is_new',
         'is_sale',
         'is_new_arrival',
+        'is_deal',
+        'deal_label',
+        'deal_start_date',
+        'deal_end_date',
         'category_id',
         'brand_id',
         'shipping_information',
@@ -36,6 +40,10 @@ class Product extends Model
         'is_featured' => 'boolean',
         'is_new' => 'boolean',
         'is_sale' => 'boolean',
+        'is_new_arrival' => 'boolean',
+        'is_deal' => 'boolean',
+        'deal_start_date' => 'date',
+        'deal_end_date' => 'date',
     ];
 
     protected static function booted()
@@ -96,6 +104,11 @@ class Product extends Model
     public function scopeFeatured($query)
     {
         return $query->where('is_featured', true);
+    }
+
+    public function scopeDeal($query)
+    {
+        return $query->where('is_deal', true);
     }
 
     public function getDiscountPercentageAttribute(): ?string
