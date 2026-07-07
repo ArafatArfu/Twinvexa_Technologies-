@@ -33,6 +33,10 @@ class BrandController extends Controller
             $data['logo'] = $this->uploadFile($request->file('logo'), 'brands');
         }
 
+        if ($request->hasFile('banner_image')) {
+            $data['banner_image'] = $this->uploadFile($request->file('banner_image'), 'brands');
+        }
+
         $brand = Brand::create($data);
 
         if ($request->wantsJson()) {
@@ -61,6 +65,13 @@ class BrandController extends Controller
                 Storage::disk('public')->delete($brand->logo);
             }
             $data['logo'] = $this->uploadFile($request->file('logo'), 'brands');
+        }
+
+        if ($request->hasFile('banner_image')) {
+            if ($brand->banner_image && Storage::disk('public')->exists($brand->banner_image)) {
+                Storage::disk('public')->delete($brand->banner_image);
+            }
+            $data['banner_image'] = $this->uploadFile($request->file('banner_image'), 'brands');
         }
 
         $brand->update($data);

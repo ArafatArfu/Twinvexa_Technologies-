@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\DealController;
 use App\Http\Controllers\PublicCategoryController;
 use App\Http\Controllers\PublicNewArrivalController;
 use App\Http\Controllers\PublicDealController;
+use App\Http\Controllers\PublicBrandController;
 
 Route::get('/', function () {
     return view('index-4');
@@ -41,6 +42,12 @@ Route::get('deal/{slug}', [PublicDealController::class, 'show'])
 
 Route::get('deals', [PublicDealController::class, 'index'])
     ->name('deals.index');
+
+Route::get('brands', [PublicBrandController::class, 'index'])
+    ->name('brands.index');
+
+Route::get('brand/{slug}', [PublicBrandController::class, 'show'])
+    ->name('brands.show');
 
 Route::post('product/{slug}/review', [ProductController::class, 'review'])
     ->name('products.review.store');

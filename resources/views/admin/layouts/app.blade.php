@@ -283,6 +283,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admin.brands.index') }}" class="sidebar-nav-item {{ request()->is('admin/brands*') ? 'active' : '' }}">
+                    <i class="fas fa-tag"></i>
+                    Manage Brands
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admin.banners.index') }}" class="sidebar-nav-item {{ request()->is('admin/banners*') ? 'active' : '' }}">
                     <i class="fas fa-image"></i>
                     Banner Management

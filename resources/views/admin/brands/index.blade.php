@@ -13,7 +13,10 @@
         <tr>
             <th style="width: 80px;">Logo</th>
             <th>Name</th>
+            <th>Products</th>
             <th style="width: 100px;">Status</th>
+            <th style="width: 100px;">Featured</th>
+            <th style="width: 80px;">Order</th>
             <th style="width: 280px;">Actions</th>
         </tr>
     </thead>
@@ -31,6 +34,7 @@
                     <strong>{{ $brand->name }}</strong>
                     <br><small class="text-muted">Slug: {{ $brand->slug }}</small>
                 </td>
+                <td>{{ $brand->product_count }}</td>
                 <td>
                     @if($brand->is_active)
                         <span class="badge bg-success">Active</span>
@@ -38,6 +42,14 @@
                         <span class="badge bg-secondary">Inactive</span>
                     @endif
                 </td>
+                <td>
+                    @if($brand->is_featured)
+                        <span class="badge bg-success">Yes</span>
+                    @else
+                        <span class="badge bg-secondary">No</span>
+                    @endif
+                </td>
+                <td>{{ $brand->display_order }}</td>
                 <td>
                     <div class="d-flex flex-wrap gap-1">
                         <a href="{{ route('admin.brands.edit', $brand) }}" class="btn btn-sm btn-warning">Edit</a>
@@ -51,7 +63,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="4" class="text-center py-4">No brands found. <a href="{{ route('admin.brands.create') }}">Create your first brand</a>.</td>
+                <td colspan="7" class="text-center py-4">No brands found. <a href="{{ route('admin.brands.create') }}">Create your first brand</a>.</td>
             </tr>
         @endforelse
     </tbody>
