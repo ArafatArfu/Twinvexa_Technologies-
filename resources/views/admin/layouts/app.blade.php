@@ -301,6 +301,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admin.cta-sections.index') }}" class="sidebar-nav-item {{ request()->is('admin/cta-sections*') ? 'active' : '' }}">
+                    <i class="fas fa-image"></i>
+                    Manage CTA Products
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admin.orders.index') }}" class="sidebar-nav-item {{ request()->is('admin/orders*') ? 'active' : '' }}">
                     <i class="fas fa-shopping-cart"></i>
                     Order Management

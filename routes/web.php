@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BannerProductController;
 use App\Http\Controllers\Admin\NewArrivalController;
 use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\AdminCtaSectionController;
 use App\Http\Controllers\PublicCategoryController;
 use App\Http\Controllers\PublicNewArrivalController;
 
@@ -160,6 +161,13 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('new-arrivals/{product}', [NewArrivalController::class, 'update'])->name('new-arrivals.update');
     Route::delete('new-arrivals/{product}', [NewArrivalController::class, 'destroy'])->name('new-arrivals.destroy');
 
+    Route::get('cta-sections', [AdminCtaSectionController::class, 'index'])->name('cta-sections.index');
+    Route::get('cta-sections/create', [AdminCtaSectionController::class, 'create'])->name('cta-sections.create');
+    Route::post('cta-sections', [AdminCtaSectionController::class, 'store'])->name('cta-sections.store');
+    Route::get('cta-sections/{ctaSection}/edit', [AdminCtaSectionController::class, 'edit'])->name('cta-sections.edit');
+    Route::put('cta-sections/{ctaSection}', [AdminCtaSectionController::class, 'update'])->name('cta-sections.update');
+    Route::delete('cta-sections/{ctaSection}', [AdminCtaSectionController::class, 'destroy'])->name('cta-sections.destroy');
+
     Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::put('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
@@ -174,6 +182,8 @@ Route::get('categories', [PublicCategoryController::class, 'index'])->name('cate
 Route::get('category/{slug}', [PublicCategoryController::class, 'show'])->name('category.show');
 
 Route::get('banner-product/{slug}', \App\Http\Controllers\PublicBannerProductController::class)->name('banner-product.show');
+
+Route::get('cta-product/{slug}', [App\Http\Controllers\PublicCtaProductController::class, 'show'])->name('cta-products.show');
 
 Route::fallback(function () {
     return view('errors.404');
