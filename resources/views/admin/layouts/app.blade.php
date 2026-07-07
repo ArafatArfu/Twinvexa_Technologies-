@@ -313,6 +313,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admin.recommendations.index') }}" class="sidebar-nav-item {{ request()->is('admin/recommendations*') ? 'active' : '' }}">
+                    <i class="fas fa-thumbs-up"></i>
+                    Manage Recommendations
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admin.deals.index') }}" class="sidebar-nav-item {{ request()->is('admin/deals*') ? 'active' : '' }}">
                     <i class="fas fa-fire"></i>
                     Manage Deals & Outlet

@@ -23,10 +23,12 @@ use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminCtaSectionController;
 use App\Http\Controllers\Admin\DealController;
 use App\Http\Controllers\Admin\TrendingProductController;
+use App\Http\Controllers\Admin\RecommendationController;
 use App\Http\Controllers\PublicCategoryController;
 use App\Http\Controllers\PublicNewArrivalController;
 use App\Http\Controllers\PublicDealController;
 use App\Http\Controllers\PublicBrandController;
+use App\Http\Controllers\PublicRecommendationController;
 
 Route::get('/', function () {
     return view('index-4');
@@ -43,6 +45,16 @@ Route::get('deal/{slug}', [PublicDealController::class, 'show'])
 
 Route::get('deals', [PublicDealController::class, 'index'])
     ->name('deals.index');
+
+Route::get('recommendations', [PublicRecommendationController::class, 'index'])
+    ->name('recommendations.index');
+
+Route::get('recommendation/{slug}', [PublicRecommendationController::class, 'show'])
+    ->name('recommendations.show');
+
+Route::post('recommendation/{slug}/buy-now', [PublicRecommendationController::class, 'buyNow'])
+    ->name('recommendations.buy-now')
+    ->middleware('auth');
 
 Route::get('brands', [PublicBrandController::class, 'index'])
     ->name('brands.index');
@@ -190,6 +202,13 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('new-arrivals/{product}/edit', [NewArrivalController::class, 'edit'])->name('new-arrivals.edit');
     Route::put('new-arrivals/{product}', [NewArrivalController::class, 'update'])->name('new-arrivals.update');
     Route::delete('new-arrivals/{product}', [NewArrivalController::class, 'destroy'])->name('new-arrivals.destroy');
+
+    Route::get('recommendations', [RecommendationController::class, 'index'])->name('recommendations.index');
+    Route::get('recommendations/create', [RecommendationController::class, 'create'])->name('recommendations.create');
+    Route::post('recommendations', [RecommendationController::class, 'store'])->name('recommendations.store');
+    Route::get('recommendations/{product}/edit', [RecommendationController::class, 'edit'])->name('recommendations.edit');
+    Route::put('recommendations/{product}', [RecommendationController::class, 'update'])->name('recommendations.update');
+    Route::delete('recommendations/{product}', [RecommendationController::class, 'destroy'])->name('recommendations.destroy');
 
     Route::get('deals', [DealController::class, 'index'])->name('deals.index');
     Route::get('deals/create', [DealController::class, 'create'])->name('deals.create');

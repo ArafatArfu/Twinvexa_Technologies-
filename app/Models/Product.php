@@ -29,6 +29,7 @@ class Product extends Model
         'deal_start_date',
         'deal_end_date',
         'is_trending',
+        'is_recommendation',
         'is_top_rated',
         'is_best_selling',
         'is_on_sale',
@@ -49,6 +50,7 @@ class Product extends Model
         'is_new_arrival' => 'boolean',
         'is_deal' => 'boolean',
         'is_trending' => 'boolean',
+        'is_recommendation' => 'boolean',
         'is_top_rated' => 'boolean',
         'is_best_selling' => 'boolean',
         'is_on_sale' => 'boolean',
@@ -124,6 +126,11 @@ class Product extends Model
     public function scopeTrending($query)
     {
         return $query->where('is_trending', true);
+    }
+
+    public function scopeRecommendation($query)
+    {
+        return $query->where('is_recommendation', true);
     }
 
     public function scopeTopRated($query)
