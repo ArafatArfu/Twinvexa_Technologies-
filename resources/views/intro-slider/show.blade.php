@@ -79,17 +79,9 @@
                                 <figure class="product-main-image">
                                     <img id="product-zoom" src="{{ $mainImage }}" data-zoom-image="{{ $mainImage }}" alt="{{ $product->name }}" class="product-image object-contain">
 
-                                    @if($slider->is_sale || $slider->is_new || !$isAvailable || $discountPercentage)
+                                    @if($product->badge)
                                         <div class="product-label">
-                                            @if($slider->is_sale || $discountPercentage)
-                                                <span class="product-label-sale">Sale</span>
-                                            @endif
-                                            @if($slider->is_new)
-                                                <span class="product-label-new">New</span>
-                                            @endif
-                                            @if(!$isAvailable)
-                                                <span class="product-label-sale" style="background:#dc3545;">Out of Stock</span>
-                                            @endif
+                                            <span class="product-label-{{ $product->badge['type'] }}">{{ $product->badge['text'] }}</span>
                                         </div>
                                     @endif
                                 </figure>
@@ -475,8 +467,9 @@
                                 <div class="col-6 col-md-4 col-lg-3">
                                     <div class="product product-2">
                                         <figure class="product-media">
-                                            @if($related->slider && ($related->slider->is_sale || $related->discount_percentage)) <span class="product-label label-circle label-sale">Sale</span> @endif
-                                            @if($related->slider && $related->slider->is_new) <span class="product-label label-circle label-new">New</span> @endif
+                                            @if($related->badge)
+                                                <span class="product-label label-circle label-{{ $related->badge['type'] }}">{{ $related->badge['text'] }}</span>
+                                            @endif
                                             <a href="{{ $related->slider ? route('intro-slider.show', $related->slider->slug) : '#' }}">
                                                 <img src="{{ $relatedImage }}" alt="{{ $related->name }}" class="product-image object-contain">
                                             </a>

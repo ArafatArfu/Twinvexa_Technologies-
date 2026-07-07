@@ -53,17 +53,9 @@
                                     @endphp
                                     <img id="product-zoom" src="{{ $mainImage }}" data-zoom-image="{{ $zoomImage }}" alt="{{ $product->name }}" class="product-image">
 
-                                    @if($product->is_sale || $product->is_new || !$product->isAvailable())
+                                    @if($product->badge)
                                         <div class="product-label">
-                                            @if($product->is_sale)
-                                                <span class="product-label-sale">Sale</span>
-                                            @endif
-                                            @if($product->is_new)
-                                                <span class="product-label-new">New</span>
-                                            @endif
-                                            @if(!$product->isAvailable())
-                                                <span class="product-label-sale" style="background:#dc3545;">Out of Stock</span>
-                                            @endif
+                                            <span class="product-label-{{ $product->badge['type'] }}">{{ $product->badge['text'] }}</span>
                                         </div>
                                     @endif
 
@@ -303,14 +295,8 @@
                     @endphp
                     <div class="product product-7 text-center">
                         <figure class="product-media">
-                            @if($relatedProduct->is_new)
-                                <span class="product-label label-new">New</span>
-                            @endif
-                            @if($relatedProduct->is_sale || ($relatedProduct->old_price && $relatedProduct->old_price > $relatedProduct->price))
-                                <span class="product-label label-sale">Sale</span>
-                            @endif
-                            @if(!$relatedProduct->isAvailable())
-                                <span class="product-label label-out">Out of Stock</span>
+                            @if($relatedProduct->badge)
+                                <span class="product-label label-circle label-{{ $relatedProduct->badge['type'] }}">{{ $relatedProduct->badge['text'] }}</span>
                             @endif
                             <a href="{{ route('deals.show', $relatedProduct->slug) }}">
                                 <img src="{{ $relImage }}" alt="{{ $relatedProduct->name }}" class="product-image">

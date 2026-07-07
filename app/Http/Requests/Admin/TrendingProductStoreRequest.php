@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class NewArrivalStoreRequest extends FormRequest
+class TrendingProductStoreRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -31,9 +31,12 @@ class NewArrivalStoreRequest extends FormRequest
             'is_featured' => ['sometimes', 'boolean'],
             'is_new' => ['sometimes', 'boolean'],
             'is_sale' => ['sometimes', 'boolean'],
+            'is_trending' => ['sometimes', 'boolean'],
+            'is_top_rated' => ['sometimes', 'boolean'],
+            'is_best_selling' => ['sometimes', 'boolean'],
+            'is_on_sale' => ['sometimes', 'boolean'],
             'badge_type' => ['nullable', 'string', 'max:50'],
             'custom_badge_text' => ['nullable', 'string', 'max:100'],
-            'order' => ['nullable', 'integer', 'min:0'],
             'display_order' => ['nullable', 'integer', 'min:0'],
             'shipping_information' => ['nullable', 'string'],
             'return_policy' => ['nullable', 'string'],

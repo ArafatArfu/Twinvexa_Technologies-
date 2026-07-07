@@ -64,13 +64,10 @@
                         $oldPrice = $product->old_price ? '$' . number_format((float) $product->old_price, 2) : '';
                         $rating = (int) round(($product->average_rating / 5) * 100);
                         $reviews = $product->review_count;
-                        $labels = [];
-                        if ($product->is_new) {
-                            $labels[] = ['type' => 'new', 'text' => 'New'];
-                        }
-                        if ($product->is_sale || ($product->old_price && $product->old_price > $product->price)) {
-                            $labels[] = ['type' => 'sale', 'text' => 'Sale'];
-                        }
+                                $labels = [];
+                                if ($product->badge) {
+                                    $labels[] = $product->badge;
+                                }
                     @endphp
                     <x-product-card
                         :image="$image"
@@ -118,11 +115,8 @@
                             $rating = (int) round(($product->average_rating / 5) * 100);
                             $reviews = $product->review_count;
                             $labels = [];
-                            if ($product->is_new) {
-                                $labels[] = ['type' => 'new', 'text' => 'New'];
-                            }
-                            if ($product->is_sale || ($product->old_price && $product->old_price > $product->price)) {
-                                $labels[] = ['type' => 'sale', 'text' => 'Sale'];
+                            if ($product->badge) {
+                                $labels[] = $product->badge;
                             }
                         @endphp
                         <x-product-card

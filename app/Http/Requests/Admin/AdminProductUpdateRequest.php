@@ -33,6 +33,8 @@ class AdminProductUpdateRequest extends FormRequest
             'is_featured' => ['sometimes', 'boolean'],
             'is_new' => ['sometimes', 'boolean'],
             'is_sale' => ['sometimes', 'boolean'],
+            'badge_type' => ['nullable', 'string', 'max:50'],
+            'custom_badge_text' => ['nullable', 'string', 'max:100'],
             'order' => ['nullable', 'integer', 'min:0'],
             'specifications' => ['nullable', 'array'],
             'specifications.*.key' => ['nullable', 'string', 'max:255'],

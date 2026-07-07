@@ -58,19 +58,11 @@
                             <figure class="product-main-image">
                                 <img id="product-zoom" src="{{ $mainImage }}" data-zoom-image="{{ $mainImage }}" alt="{{ $product->name }}" class="product-image object-contain">
                                 
-                                @if($product->is_sale || $product->is_new || !$isAvailable)
-                                    <div class="product-label">
-                                        @if($product->is_sale)
-                                            <span class="product-label-sale">Sale</span>
-                                        @endif
-                                        @if($product->is_new)
-                                            <span class="product-label-new">New</span>
-                                        @endif
-                                        @if(!$isAvailable)
-                                            <span class="product-label-sale" style="background:#dc3545;">Out of Stock</span>
-                                        @endif
-                                    </div>
-                                @endif
+                                    @if($product->badge)
+                                        <div class="product-label">
+                                            <span class="product-label-{{ $product->badge['type'] }}">{{ $product->badge['text'] }}</span>
+                                        </div>
+                                    @endif
                             </figure>
 
                             <div id="product-zoom-gallery" class="product-image-gallery">
@@ -461,12 +453,9 @@
                             <div class="col-6 col-md-4 col-lg-3">
                                 <div class="product product-2">
                                     <figure class="product-media">
-                                        @if($related->is_sale)
-                                            <span class="product-label label-circle label-sale">Sale</span>
-                                        @endif
-                                        @if($related->is_new)
-                                            <span class="product-label label-circle label-new">New</span>
-                                        @endif
+                            @if($related->badge)
+                                <span class="product-label label-circle label-{{ $related->badge['type'] }}">{{ $related->badge['text'] }}</span>
+                            @endif
                                         <a href="{{ route('products.show', $related->slug) }}">
                                             <img src="{{ $relatedImage }}" alt="{{ $related->name }}" class="product-image object-contain">
                                         </a>

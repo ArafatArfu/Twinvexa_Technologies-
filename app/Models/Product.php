@@ -28,6 +28,12 @@ class Product extends Model
         'deal_label',
         'deal_start_date',
         'deal_end_date',
+        'is_trending',
+        'is_top_rated',
+        'is_best_selling',
+        'is_on_sale',
+        'badge_type',
+        'custom_badge_text',
         'category_id',
         'brand_id',
         'shipping_information',
@@ -42,6 +48,10 @@ class Product extends Model
         'is_sale' => 'boolean',
         'is_new_arrival' => 'boolean',
         'is_deal' => 'boolean',
+        'is_trending' => 'boolean',
+        'is_top_rated' => 'boolean',
+        'is_best_selling' => 'boolean',
+        'is_on_sale' => 'boolean',
         'deal_start_date' => 'date',
         'deal_end_date' => 'date',
     ];
@@ -111,6 +121,26 @@ class Product extends Model
         return $query->where('is_deal', true);
     }
 
+    public function scopeTrending($query)
+    {
+        return $query->where('is_trending', true);
+    }
+
+    public function scopeTopRated($query)
+    {
+        return $query->where('is_top_rated', true);
+    }
+
+    public function scopeBestSelling($query)
+    {
+        return $query->where('is_best_selling', true);
+    }
+
+    public function scopeOnSale($query)
+    {
+        return $query->where('is_on_sale', true);
+    }
+
     public function getDiscountPercentageAttribute(): ?string
     {
         if ($this->old_price && $this->price) {
@@ -132,6 +162,25 @@ class Product extends Model
     public function getReviewCountAttribute(): int
     {
         return $this->reviews()->count();
+    }
+
+    public function getBadgeAttribute(): ?array
+    {
+        if ($this->badge_type === 'none' || !$this->badge_type) {
+            return null;
+        }
+
+        $text = $this->custom_badge_text ?: ucfirst(str_replace('_', ' ', $this->badge_type));
+        $type = $this->badge_type;
+
+        if (in_array($type, ['trending', 'top_rated', 'best_selling', 'hot_deal'])) {
+            $type = 'top';
+        }
+
+        return [
+            'type' => $type,
+            'text' => $text,
+        ];
     }
 
     public function isAvailable(): bool

@@ -119,11 +119,8 @@
                         <div class="col-6 col-md-4 col-lg-3">
                             <div class="product product-2">
                                 <figure class="product-media">
-                                    @if($product->is_sale || $product->discount_percentage)
-                                        <span class="product-label label-circle label-sale">Sale</span>
-                                    @endif
-                                    @if($product->is_new)
-                                        <span class="product-label label-circle label-new">New</span>
+                                    @if($product->badge)
+                                        <span class="product-label label-circle label-{{ $product->badge['type'] }}">{{ $product->badge['text'] }}</span>
                                     @endif
                                     <a href="{{ route('products.show', $product->slug) }}">
                                         <img src="{{ $productImage }}" alt="{{ $product->name }}" class="product-image object-contain">

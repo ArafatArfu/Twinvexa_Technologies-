@@ -55,14 +55,9 @@
                             <figure class="product-main-image">
                                 <img id="product-zoom" src="{{ $mainImage }}" data-zoom-image="{{ $mainImage }}" alt="{{ $product->name }}" class="product-image object-contain">
 
-                                @if(!$isAvailable || $discountPercentage)
+                                @if($product->badge)
                                     <div class="product-label">
-                                        @if($discountPercentage)
-                                            <span class="product-label-sale">-{{ $discountPercentage }}%</span>
-                                        @endif
-                                        @if(!$isAvailable)
-                                            <span class="product-label-sale" style="background:#dc3545;">Out of Stock</span>
-                                        @endif
+                                        <span class="product-label-{{ $product->badge['type'] }}">{{ $product->badge['text'] }}</span>
                                     </div>
                                 @endif
                             </figure>

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class NewArrivalStoreRequest extends FormRequest
+class TrendingProductUpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -13,17 +13,19 @@ class NewArrivalStoreRequest extends FormRequest
 
     public function rules(): array
     {
+        $productId = $this->product?->id;
+
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'slug' => ['nullable', 'string', 'max:255', 'unique:products,slug'],
-            'category_id' => ['required', 'exists:categories,id'],
+            'name' => ['sometimes', 'required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:products,slug,' . $productId],
+            'category_id' => ['sometimes', 'required', 'exists:categories,id'],
             'brand_id' => ['nullable', 'exists:brands,id'],
             'short_description' => ['nullable', 'string', 'max:1000'],
             'description' => ['nullable', 'string'],
             'sku' => ['nullable', 'string', 'max:100'],
-            'price' => ['required', 'numeric', 'min:0'],
+            'price' => ['sometimes', 'required', 'numeric', 'min:0'],
             'old_price' => ['nullable', 'numeric', 'min:0'],
-            'quantity' => ['required', 'integer', 'min:0'],
+            'quantity' => ['sometimes', 'required', 'integer', 'min:0'],
             'image' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,webp,svg', 'max:4096'],
             'gallery' => ['nullable', 'array'],
             'gallery.*' => ['file', 'mimes:jpeg,png,jpg,gif,webp,svg', 'max:4096'],
@@ -31,9 +33,12 @@ class NewArrivalStoreRequest extends FormRequest
             'is_featured' => ['sometimes', 'boolean'],
             'is_new' => ['sometimes', 'boolean'],
             'is_sale' => ['sometimes', 'boolean'],
+            'is_trending' => ['sometimes', 'boolean'],
+            'is_top_rated' => ['sometimes', 'boolean'],
+            'is_best_selling' => ['sometimes', 'boolean'],
+            'is_on_sale' => ['sometimes', 'boolean'],
             'badge_type' => ['nullable', 'string', 'max:50'],
             'custom_badge_text' => ['nullable', 'string', 'max:100'],
-            'order' => ['nullable', 'integer', 'min:0'],
             'display_order' => ['nullable', 'integer', 'min:0'],
             'shipping_information' => ['nullable', 'string'],
             'return_policy' => ['nullable', 'string'],

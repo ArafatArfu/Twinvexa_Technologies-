@@ -1,27 +1,28 @@
 @extends('admin.layouts.app')
 
-@section('header-title', 'Add Deal Product')
+@section('header-title', 'Edit Trending Product')
 
 @section('content')
-<h2>Add Deal Product</h2>
+<h2>Edit Product</h2>
 
-<form action="{{ route('admin.deals.store') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('admin.trending-products.update', $product) }}" method="POST" enctype="multipart/form-data">
     @csrf
+    @method('PUT')
 
     <div class="card mb-3">
         <div class="card-header">Basic Information</div>
         <div class="card-body">
             <div class="mb-3">
                 <label for="name" class="form-label">Product Title <span class="text-danger">*</span></label>
-                <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required placeholder="e.g., Samsung Galaxy Note9, Bose SoundSport, GoPro Fusion 360">
+                <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $product->name) }}" required placeholder="e.g., Samsung Galaxy Note9">
                 @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
 
             <div class="mb-3">
                 <label for="slug" class="form-label">Slug</label>
-                <input type="text" name="slug" id="slug" class="form-control @error('slug') is-invalid @enderror" value="{{ old('slug') }}" placeholder="e.g., samsung-galaxy-note9">
+                <input type="text" name="slug" id="slug" class="form-control @error('slug') is-invalid @enderror" value="{{ old('slug', $product->slug) }}" placeholder="e.g., samsung-galaxy-note9">
                 @error('slug')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                <small class="text-muted">Leave empty to auto-generate from the product name. Used in the page URL.</small>
+                <small class="text-muted">Leave empty to auto-generate from the product name.</small>
             </div>
 
             <div class="row">
@@ -30,7 +31,7 @@
                     <select name="category_id" id="category_id" class="form-control @error('category_id') is-invalid @enderror" required>
                         <option value="">Select Category</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                         @endforeach
                     </select>
                     @error('category_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -41,7 +42,7 @@
                     <select name="brand_id" id="brand_id" class="form-control @error('brand_id') is-invalid @enderror">
                         <option value="">Select Brand</option>
                         @foreach($brands as $brand)
-                            <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                            <option value="{{ $brand->id }}" {{ old('brand_id', $product->brand_id) == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
                         @endforeach
                     </select>
                     @error('brand_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -51,7 +52,7 @@
 
             <div class="mb-3">
                 <label for="sku" class="form-label">SKU</label>
-                <input type="text" name="sku" id="sku" class="form-control @error('sku') is-invalid @enderror" value="{{ old('sku') }}" placeholder="e.g., DEAL-PROD-001">
+                <input type="text" name="sku" id="sku" class="form-control @error('sku') is-invalid @enderror" value="{{ old('sku', $product->sku) }}" placeholder="e.g., TREND-PROD-001">
                 @error('sku')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
         </div>
@@ -63,18 +64,18 @@
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <label for="price" class="form-label">Current Price <span class="text-danger">*</span></label>
-                    <input type="number" step="0.01" name="price" id="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" required placeholder="0.00">
+                    <input type="number" step="0.01" name="price" id="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price', $product->price) }}" required placeholder="0.00">
                     @error('price')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="old_price" class="form-label">Old Price</label>
-                    <input type="number" step="0.01" name="old_price" id="old_price" class="form-control @error('old_price') is-invalid @enderror" value="{{ old('old_price') }}" placeholder="0.00">
+                    <input type="number" step="0.01" name="old_price" id="old_price" class="form-control @error('old_price') is-invalid @enderror" value="{{ old('old_price', $product->old_price) }}" placeholder="0.00">
                     @error('old_price')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     <small class="text-muted">Show strikethrough original price for discount badge.</small>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="quantity" class="form-label">Stock Quantity <span class="text-danger">*</span></label>
-                    <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" value="{{ old('quantity', 0) }}" required min="0">
+                    <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" value="{{ old('quantity', $product->quantity) }}" required min="0">
                     @error('quantity')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
             </div>
@@ -82,29 +83,23 @@
     </div>
 
     <div class="card mb-3">
-        <div class="card-header">Deal Information</div>
+        <div class="card-header">Trending Section Settings</div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="deal_label" class="form-label">Deal Label</label>
-                    <select name="deal_label" id="deal_label" class="form-control @error('deal_label') is-invalid @enderror">
-                        <option value="">None</option>
-                        <option value="Today's Deal" {{ old('deal_label') == "Today's Deal" ? 'selected' : '' }}>Today's Deal</option>
-                        <option value="Hot Deal" {{ old('deal_label') == 'Hot Deal' ? 'selected' : '' }}>Hot Deal</option>
-                        <option value="Outlet" {{ old('deal_label') == 'Outlet' ? 'selected' : '' }}>Outlet</option>
-                    </select>
-                    @error('deal_label')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="deal_start_date" class="form-label">Deal Start Date</label>
-                    <input type="date" name="deal_start_date" id="deal_start_date" class="form-control @error('deal_start_date') is-invalid @enderror" value="{{ old('deal_start_date') }}">
-                    @error('deal_start_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="deal_end_date" class="form-label">Deal End Date</label>
-                    <input type="date" name="deal_end_date" id="deal_end_date" class="form-control @error('deal_end_date') is-invalid @enderror" value="{{ old('deal_end_date') }}">
-                    @error('deal_end_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
+            <div class="form-check mb-2">
+                <input type="checkbox" name="is_trending" id="is_trending" class="form-check-input" value="1" {{ old('is_trending', $product->is_trending) ? 'checked' : '' }}>
+                <label for="is_trending" class="form-check-label">Show in Trending Products tab</label>
+            </div>
+            <div class="form-check mb-2">
+                <input type="checkbox" name="is_top_rated" id="is_top_rated" class="form-check-input" value="1" {{ old('is_top_rated', $product->is_top_rated) ? 'checked' : '' }}>
+                <label for="is_top_rated" class="form-check-label">Show in Top Rated tab</label>
+            </div>
+            <div class="form-check mb-2">
+                <input type="checkbox" name="is_best_selling" id="is_best_selling" class="form-check-input" value="1" {{ old('is_best_selling', $product->is_best_selling) ? 'checked' : '' }}>
+                <label for="is_best_selling" class="form-check-label">Show in Best Selling tab</label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" name="is_on_sale" id="is_on_sale" class="form-check-input" value="1" {{ old('is_on_sale', $product->is_on_sale) ? 'checked' : '' }}>
+                <label for="is_on_sale" class="form-check-label">Show in On Sale tab</label>
             </div>
         </div>
     </div>
@@ -116,7 +111,20 @@
                 <label for="image" class="form-label">Product Image</label>
                 <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror" accept="image/*">
                 @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                <small class="text-muted">Recommended: 600 x 600 px. Max 4MB. Used as main product image.</small>
+                <small class="text-muted">Recommended: 600 x 600 px. Max 4MB. Leave empty to keep current image.</small>
+
+                @if($product->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image))
+                    <div class="mt-3 d-flex align-items-center gap-3">
+                        <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" width="120" class="img-thumbnail">
+                        <div>
+                            <label class="form-check">
+                                <input type="checkbox" name="remove_image" id="remove_image" class="form-check-input" value="1">
+                                <span class="form-check-label text-danger">Remove current image</span>
+                            </label>
+                        </div>
+                    </div>
+                @endif
+
                 <div id="main-image-preview" class="mt-3 d-none">
                     <img src="#" alt="Preview" width="120" class="img-thumbnail" id="main-image-preview-img">
                 </div>
@@ -127,7 +135,7 @@
                 <input type="file" name="gallery[]" id="gallery" class="form-control @error('gallery') is-invalid @enderror" accept="image/*" multiple>
                 @error('gallery')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 @error('gallery.*')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                <small class="text-muted">You can select multiple images. Max 4MB each.</small>
+                <small class="text-muted">You can select multiple images. Max 4MB each. Existing gallery images will be replaced on upload.</small>
                 <div id="gallery-preview" class="d-flex flex-wrap gap-2 mt-3"></div>
             </div>
         </div>
@@ -138,12 +146,12 @@
         <div class="card-body">
             <div class="mb-3">
                 <label for="short_description" class="form-label">Short Description</label>
-                <textarea name="short_description" id="short_description" class="form-control @error('short_description') is-invalid @enderror" rows="2" placeholder="Brief product summary shown on product cards...">{{ old('short_description') }}</textarea>
+                <textarea name="short_description" id="short_description" class="form-control @error('short_description') is-invalid @enderror" rows="2" placeholder="Brief product summary...">{{ old('short_description', $product->short_description) }}</textarea>
                 @error('short_description')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Full Description</label>
-                <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" rows="5" placeholder="Detailed product description...">{{ old('description') }}</textarea>
+                <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" rows="5" placeholder="Detailed product description...">{{ old('description', $product->description) }}</textarea>
                 @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
         </div>
@@ -154,12 +162,12 @@
         <div class="card-body">
             <div class="mb-3">
                 <label for="shipping_information" class="form-label">Shipping Information</label>
-                <textarea name="shipping_information" id="shipping_information" class="form-control @error('shipping_information') is-invalid @enderror" rows="3" placeholder="Shipping details, delivery time, costs...">{{ old('shipping_information') }}</textarea>
+                <textarea name="shipping_information" id="shipping_information" class="form-control @error('shipping_information') is-invalid @enderror" rows="3" placeholder="Shipping details...">{{ old('shipping_information', $product->shipping_information) }}</textarea>
                 @error('shipping_information')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
             <div class="mb-3">
                 <label for="return_policy" class="form-label">Return Policy</label>
-                <textarea name="return_policy" id="return_policy" class="form-control @error('return_policy') is-invalid @enderror" rows="3" placeholder="Return policy details...">{{ old('return_policy') }}</textarea>
+                <textarea name="return_policy" id="return_policy" class="form-control @error('return_policy') is-invalid @enderror" rows="3" placeholder="Return policy details...">{{ old('return_policy', $product->return_policy) }}</textarea>
                 @error('return_policy')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
         </div>
@@ -171,14 +179,14 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="display_order" class="form-label">Display Order</label>
-                    <input type="number" name="display_order" id="display_order" class="form-control @error('display_order') is-invalid @enderror" value="{{ old('display_order', 0) }}">
+                    <input type="number" name="display_order" id="display_order" class="form-control @error('display_order') is-invalid @enderror" value="{{ old('display_order', $product->display_order) }}">
                     @error('display_order')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    <small class="text-muted">Lower numbers appear first on the homepage.</small>
+                    <small class="text-muted">Lower numbers appear first.</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Status</label>
                     <div class="form-check mt-2">
-                        <input type="checkbox" name="is_active" id="is_active" class="form-check-input" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
+                        <input type="checkbox" name="is_active" id="is_active" class="form-check-input" value="1" {{ old('is_active', $product->is_active) ? 'checked' : '' }}>
                         <label for="is_active" class="form-check-label">Active</label>
                     </div>
                     <small class="text-muted d-block">Only active products will be displayed on the frontend.</small>
@@ -186,7 +194,7 @@
             </div>
 
             <div class="form-check mb-2">
-                <input type="checkbox" name="is_featured" id="is_featured" class="form-check-input" value="1" {{ old('is_featured') ? 'checked' : '' }}>
+                <input type="checkbox" name="is_featured" id="is_featured" class="form-check-input" value="1" {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}>
                 <label for="is_featured" class="form-check-label">Featured Product</label>
             </div>
         </div>
@@ -194,55 +202,9 @@
 
     @include('admin.partials.badge-selector')
 
-    <button type="submit" class="btn btn-primary">Save Product</button>
-    <a href="{{ route('admin.deals.index') }}" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">Update Product</button>
+    <a href="{{ route('admin.trending-products.index') }}" class="btn btn-secondary">Cancel</a>
 </form>
-
-{{-- Category Modal --}}
-<div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add New Category</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="modal-category-name" class="form-label">Category Name <span class="text-danger">*</span></label>
-                    <input type="text" id="modal-category-name" class="form-control" placeholder="Enter category name">
-                    <div id="category-error" class="invalid-feedback d-none">Category name is required.</div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="save-category-modal">Save Category</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- Brand Modal --}}
-<div class="modal fade" id="brandModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add New Brand</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="modal-brand-name" class="form-label">Brand Name <span class="text-danger">*</span></label>
-                    <input type="text" id="modal-brand-name" class="form-control" placeholder="Enter brand name">
-                    <div id="brand-error" class="invalid-feedback d-none">Brand name is required.</div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="save-brand-modal">Save Brand</button>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 @push('scripts')

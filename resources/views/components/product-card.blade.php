@@ -16,13 +16,19 @@
 <div class="product product-2">
     <figure class="product-media">
         @foreach($labels as $label)
-            @if($label['type'] === 'top')
-                <span class="product-label label-circle label-top">{{ $label['text'] }}</span>
-            @elseif($label['type'] === 'sale')
-                <span class="product-label label-circle label-sale">{{ $label['text'] }}</span>
-            @elseif($label['type'] === 'new')
-                <span class="product-label label-circle label-new">{{ $label['text'] }}</span>
-            @endif
+            @php
+                $type = $label['type'] ?? 'top';
+                $text = $label['text'] ?? '';
+                $cssClass = 'label-circle';
+                if ($type === 'sale') {
+                    $cssClass .= ' label-sale';
+                } elseif ($type === 'new') {
+                    $cssClass .= ' label-new';
+                } else {
+                    $cssClass .= ' label-top';
+                }
+            @endphp
+            <span class="product-label {{ $cssClass }}">{{ $text }}</span>
         @endforeach
         <a href="{{ $link }}"><img src="{{ asset($image) }}" alt="Product image" class="product-image"></a>
         @if($hoverImage)

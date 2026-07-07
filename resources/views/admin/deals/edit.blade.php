@@ -203,16 +203,10 @@
                 <input type="checkbox" name="is_featured" id="is_featured" class="form-check-input" value="1" {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}>
                 <label for="is_featured" class="form-check-label">Featured Product</label>
             </div>
-            <div class="form-check mb-2">
-                <input type="checkbox" name="is_new" id="is_new" class="form-check-input" value="1" {{ old('is_new', $product->is_new) ? 'checked' : '' }}>
-                <label for="is_new" class="form-check-label">New Product Badge</label>
-            </div>
-            <div class="form-check">
-                <input type="checkbox" name="is_sale" id="is_sale" class="form-check-input" value="1" {{ old('is_sale', $product->is_sale) ? 'checked' : '' }}>
-                <label for="is_sale" class="form-check-label">On Sale Badge</label>
-            </div>
         </div>
     </div>
+
+    @include('admin.partials.badge-selector')
 
     <button type="submit" class="btn btn-primary">Update Product</button>
     <a href="{{ route('admin.deals.index') }}" class="btn btn-secondary">Cancel</a>

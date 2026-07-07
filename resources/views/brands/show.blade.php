@@ -72,11 +72,8 @@
                                 ? round((($product->old_price - $product->price) / $product->old_price) * 100) . '%'
                                 : null;
                             $labels = [];
-                            if ($product->is_new) {
-                                $labels[] = ['type' => 'new', 'text' => 'New'];
-                            }
-                            if ($product->is_sale || $discount) {
-                                $labels[] = ['type' => 'sale', 'text' => 'Sale'];
+                            if ($product->badge) {
+                                $labels[] = $product->badge;
                             }
                         @endphp
                         <div class="col-6 col-md-4 col-lg-3 mb-4">

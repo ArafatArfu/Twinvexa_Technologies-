@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\NewArrivalController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminCtaSectionController;
 use App\Http\Controllers\Admin\DealController;
+use App\Http\Controllers\Admin\TrendingProductController;
 use App\Http\Controllers\PublicCategoryController;
 use App\Http\Controllers\PublicNewArrivalController;
 use App\Http\Controllers\PublicDealController;
@@ -154,6 +155,20 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('products/{product}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
     Route::put('products/{product}', [AdminProductController::class, 'update'])->name('products.update');
     Route::delete('products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
+
+    Route::get('trending-products', [TrendingProductController::class, 'index'])->name('trending-products.index');
+    Route::get('trending-products/create', [TrendingProductController::class, 'create'])->name('trending-products.create');
+    Route::post('trending-products', [TrendingProductController::class, 'store'])->name('trending-products.store');
+    Route::get('trending-products/{product}/edit', [TrendingProductController::class, 'edit'])->name('trending-products.edit');
+    Route::put('trending-products/{product}', [TrendingProductController::class, 'update'])->name('trending-products.update');
+    Route::delete('trending-products/{product}', [TrendingProductController::class, 'destroy'])->name('trending-products.destroy');
+
+    Route::get('trending-products/banner', [TrendingProductController::class, 'bannerIndex'])->name('trending-products.banner.index');
+    Route::get('trending-products/banner/create', [TrendingProductController::class, 'bannerCreate'])->name('trending-products.banner.create');
+    Route::post('trending-products/banner', [TrendingProductController::class, 'bannerStore'])->name('trending-products.banner.store');
+    Route::get('trending-products/banner/{trendingBanner}/edit', [TrendingProductController::class, 'bannerEdit'])->name('trending-products.banner.edit');
+    Route::put('trending-products/banner/{trendingBanner}', [TrendingProductController::class, 'bannerUpdate'])->name('trending-products.banner.update');
+    Route::delete('trending-products/banner/{trendingBanner}', [TrendingProductController::class, 'bannerDestroy'])->name('trending-products.banner.destroy');
 
     Route::get('banners', [BannerController::class, 'index'])->name('banners.index');
     Route::get('banners/create', [BannerController::class, 'create'])->name('banners.create');

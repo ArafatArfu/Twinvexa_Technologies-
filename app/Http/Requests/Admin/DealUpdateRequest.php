@@ -33,6 +33,8 @@ class DealUpdateRequest extends FormRequest
             'is_featured' => ['sometimes', 'boolean'],
             'is_new' => ['sometimes', 'boolean'],
             'is_sale' => ['sometimes', 'boolean'],
+            'badge_type' => ['nullable', 'string', 'max:50'],
+            'custom_badge_text' => ['nullable', 'string', 'max:100'],
             'deal_label' => ['nullable', 'string', 'max:255'],
             'deal_start_date' => ['nullable', 'date'],
             'deal_end_date' => ['nullable', 'date', 'after_or_equal:deal_start_date'],

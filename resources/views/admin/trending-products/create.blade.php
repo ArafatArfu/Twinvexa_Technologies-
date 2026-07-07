@@ -1,11 +1,11 @@
 @extends('admin.layouts.app')
 
-@section('header-title', 'Add Deal Product')
+@section('header-title', 'Add Trending Product')
 
 @section('content')
-<h2>Add Deal Product</h2>
+<h2>Add Product</h2>
 
-<form action="{{ route('admin.deals.store') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('admin.trending-products.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
     <div class="card mb-3">
@@ -51,7 +51,7 @@
 
             <div class="mb-3">
                 <label for="sku" class="form-label">SKU</label>
-                <input type="text" name="sku" id="sku" class="form-control @error('sku') is-invalid @enderror" value="{{ old('sku') }}" placeholder="e.g., DEAL-PROD-001">
+                <input type="text" name="sku" id="sku" class="form-control @error('sku') is-invalid @enderror" value="{{ old('sku') }}" placeholder="e.g., TREND-PROD-001">
                 @error('sku')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
         </div>
@@ -82,29 +82,23 @@
     </div>
 
     <div class="card mb-3">
-        <div class="card-header">Deal Information</div>
+        <div class="card-header">Trending Section Settings</div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="deal_label" class="form-label">Deal Label</label>
-                    <select name="deal_label" id="deal_label" class="form-control @error('deal_label') is-invalid @enderror">
-                        <option value="">None</option>
-                        <option value="Today's Deal" {{ old('deal_label') == "Today's Deal" ? 'selected' : '' }}>Today's Deal</option>
-                        <option value="Hot Deal" {{ old('deal_label') == 'Hot Deal' ? 'selected' : '' }}>Hot Deal</option>
-                        <option value="Outlet" {{ old('deal_label') == 'Outlet' ? 'selected' : '' }}>Outlet</option>
-                    </select>
-                    @error('deal_label')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="deal_start_date" class="form-label">Deal Start Date</label>
-                    <input type="date" name="deal_start_date" id="deal_start_date" class="form-control @error('deal_start_date') is-invalid @enderror" value="{{ old('deal_start_date') }}">
-                    @error('deal_start_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="deal_end_date" class="form-label">Deal End Date</label>
-                    <input type="date" name="deal_end_date" id="deal_end_date" class="form-control @error('deal_end_date') is-invalid @enderror" value="{{ old('deal_end_date') }}">
-                    @error('deal_end_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
+            <div class="form-check mb-2">
+                <input type="checkbox" name="is_trending" id="is_trending" class="form-check-input" value="1" {{ old('is_trending') ? 'checked' : '' }}>
+                <label for="is_trending" class="form-check-label">Show in Trending Products tab</label>
+            </div>
+            <div class="form-check mb-2">
+                <input type="checkbox" name="is_top_rated" id="is_top_rated" class="form-check-input" value="1" {{ old('is_top_rated') ? 'checked' : '' }}>
+                <label for="is_top_rated" class="form-check-label">Show in Top Rated tab</label>
+            </div>
+            <div class="form-check mb-2">
+                <input type="checkbox" name="is_best_selling" id="is_best_selling" class="form-check-input" value="1" {{ old('is_best_selling') ? 'checked' : '' }}>
+                <label for="is_best_selling" class="form-check-label">Show in Best Selling tab</label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" name="is_on_sale" id="is_on_sale" class="form-check-input" value="1" {{ old('is_on_sale') ? 'checked' : '' }}>
+                <label for="is_on_sale" class="form-check-label">Show in On Sale tab</label>
             </div>
         </div>
     </div>
@@ -173,7 +167,7 @@
                     <label for="display_order" class="form-label">Display Order</label>
                     <input type="number" name="display_order" id="display_order" class="form-control @error('display_order') is-invalid @enderror" value="{{ old('display_order', 0) }}">
                     @error('display_order')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    <small class="text-muted">Lower numbers appear first on the homepage.</small>
+                    <small class="text-muted">Lower numbers appear first.</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Status</label>
@@ -195,54 +189,8 @@
     @include('admin.partials.badge-selector')
 
     <button type="submit" class="btn btn-primary">Save Product</button>
-    <a href="{{ route('admin.deals.index') }}" class="btn btn-secondary">Cancel</a>
+    <a href="{{ route('admin.trending-products.index') }}" class="btn btn-secondary">Cancel</a>
 </form>
-
-{{-- Category Modal --}}
-<div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add New Category</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="modal-category-name" class="form-label">Category Name <span class="text-danger">*</span></label>
-                    <input type="text" id="modal-category-name" class="form-control" placeholder="Enter category name">
-                    <div id="category-error" class="invalid-feedback d-none">Category name is required.</div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="save-category-modal">Save Category</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- Brand Modal --}}
-<div class="modal fade" id="brandModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add New Brand</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="modal-brand-name" class="form-label">Brand Name <span class="text-danger">*</span></label>
-                    <input type="text" id="modal-brand-name" class="form-control" placeholder="Enter brand name">
-                    <div id="brand-error" class="invalid-feedback d-none">Brand name is required.</div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="save-brand-modal">Save Brand</button>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 @push('scripts')

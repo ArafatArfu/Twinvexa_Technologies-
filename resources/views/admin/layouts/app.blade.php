@@ -307,6 +307,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admin.trending-products.index') }}" class="sidebar-nav-item {{ request()->is('admin/trending-products*') ? 'active' : '' }}">
+                    <i class="fas fa-chart-line"></i>
+                    Manage Trending Products
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admin.deals.index') }}" class="sidebar-nav-item {{ request()->is('admin/deals*') ? 'active' : '' }}">
                     <i class="fas fa-fire"></i>
                     Manage Deals & Outlet
