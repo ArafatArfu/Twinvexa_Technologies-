@@ -3,11 +3,11 @@
         <h4 class="widget-title">Useful Links</h4>
 
         <ul class="widget-list">
-            <li><a href="#">About Molla</a></li>
-            <li><a href="#">Our Services</a></li>
-            <li><a href="#">How to shop on Molla</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">Contact us</a></li>
+            @if(isset($footerLinks))
+                @foreach($footerLinks->get('useful_links', []) as $link)
+                    <li><a href="{{ $link->url ?: '#' }}">{{ $link->title }}</a></li>
+                @endforeach
+            @endif
         </ul>
     </div>
 </div>

@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
             TrendingProductsSeeder::class,
             TrendingBannerSeeder::class,
             RecommendationProductsSeeder::class,
+            IconBoxSeeder::class,
+            FooterSeeder::class,
         ]);
 
         User::factory()->create([

@@ -24,6 +24,9 @@ use App\Http\Controllers\Admin\AdminCtaSectionController;
 use App\Http\Controllers\Admin\DealController;
 use App\Http\Controllers\Admin\TrendingProductController;
 use App\Http\Controllers\Admin\RecommendationController;
+use App\Http\Controllers\Admin\IconBoxController;
+use App\Http\Controllers\Admin\FooterController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PublicCategoryController;
 use App\Http\Controllers\PublicNewArrivalController;
 use App\Http\Controllers\PublicDealController;
@@ -224,6 +227,23 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('cta-sections/{ctaSection}', [AdminCtaSectionController::class, 'update'])->name('cta-sections.update');
     Route::delete('cta-sections/{ctaSection}', [AdminCtaSectionController::class, 'destroy'])->name('cta-sections.destroy');
 
+    Route::get('icon-boxes', [IconBoxController::class, 'index'])->name('icon-boxes.index');
+    Route::get('icon-boxes/create', [IconBoxController::class, 'create'])->name('icon-boxes.create');
+    Route::post('icon-boxes', [IconBoxController::class, 'store'])->name('icon-boxes.store');
+    Route::get('icon-boxes/{iconBox}/edit', [IconBoxController::class, 'edit'])->name('icon-boxes.edit');
+    Route::put('icon-boxes/{iconBox}', [IconBoxController::class, 'update'])->name('icon-boxes.update');
+    Route::delete('icon-boxes/{iconBox}', [IconBoxController::class, 'destroy'])->name('icon-boxes.destroy');
+
+    Route::get('footer', [FooterController::class, 'index'])->name('footer.index');
+    Route::put('footer', [FooterController::class, 'update'])->name('footer.update');
+
+    Route::get('footer/links', [FooterController::class, 'linksIndex'])->name('footer.links.index');
+    Route::get('footer/links/create', [FooterController::class, 'linksCreate'])->name('footer.links.create');
+    Route::post('footer/links', [FooterController::class, 'linksStore'])->name('footer.links.store');
+    Route::get('footer/links/{footerLink}/edit', [FooterController::class, 'linksEdit'])->name('footer.links.edit');
+    Route::put('footer/links/{footerLink}', [FooterController::class, 'linksUpdate'])->name('footer.links.update');
+    Route::delete('footer/links/{footerLink}', [FooterController::class, 'linksDestroy'])->name('footer.links.destroy');
+
     Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::put('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
@@ -240,6 +260,8 @@ Route::get('category/{slug}', [PublicCategoryController::class, 'show'])->name('
 Route::get('banner-product/{slug}', \App\Http\Controllers\PublicBannerProductController::class)->name('banner-product.show');
 
 Route::get('cta-product/{slug}', [App\Http\Controllers\PublicCtaProductController::class, 'show'])->name('cta-products.show');
+
+Route::post('newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
 Route::fallback(function () {
     return view('errors.404');

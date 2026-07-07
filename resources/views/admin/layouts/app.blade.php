@@ -331,6 +331,18 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admin.icon-boxes.index') }}" class="sidebar-nav-item {{ request()->is('admin/icon-boxes*') ? 'active' : '' }}">
+                    <i class="fas fa-th-large"></i>
+                    Manage Icon Boxes
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.footer.index') }}" class="sidebar-nav-item {{ request()->is('admin/footer*') ? 'active' : '' }}">
+                    <i class="fas fa-shoe-prints"></i>
+                    Manage Footer
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admin.orders.index') }}" class="sidebar-nav-item {{ request()->is('admin/orders*') ? 'active' : '' }}">
                     <i class="fas fa-shopping-cart"></i>
                     Order Management

@@ -3,12 +3,11 @@
         <h4 class="widget-title">Customer Service</h4>
 
         <ul class="widget-list">
-            <li><a href="#">Payment Methods</a></li>
-            <li><a href="#">Money-back guarantee!</a></li>
-            <li><a href="#">Returns</a></li>
-            <li><a href="#">Shipping</a></li>
-            <li><a href="#">Terms and conditions</a></li>
-            <li><a href="#">Privacy Policy</a></li>
+            @if(isset($footerLinks))
+                @foreach($footerLinks->get('customer_service', []) as $link)
+                    <li><a href="{{ $link->url ?: '#' }}">{{ $link->title }}</a></li>
+                @endforeach
+            @endif
         </ul>
     </div>
 </div>
