@@ -23,7 +23,7 @@
                     <img src="{{ $logoUrl }}" alt="{{ $settings->logo_text ?? 'Logo' }}" width="{{ $logoWidth }}" height="{{ $logoHeight }}" style="max-width: none; height: auto; object-fit: contain; flex-shrink: 0; image-rendering: auto;">
                 @else
                     @if($settings && $settings->logo_text)
-                        <span class="logo-name" style="white-space: nowrap; font-size: 1.8rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1; background: linear-gradient(to right, #39f, #1d84ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent;">{{ $settings->logo_text }}</span>
+                        <span class="logo-name" style="white-space: nowrap; font-size: 1.8rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1; background: linear-gradient(to right, #E2E2D2, #C51F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent;">{{ $settings->logo_text }}</span>
                     @endif
                 @endif
             </a>
