@@ -242,6 +242,7 @@
             }
         }
     </style>
+    @stack('css')
 </head>
 <body>
     <div class="sidebar" id="sidebar">

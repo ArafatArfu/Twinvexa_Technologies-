@@ -2,6 +2,10 @@
 
 @section('header-title', 'Intro Sliders')
 
+@push('css')
+<link rel="stylesheet" href="{{ asset('assets/css/intro-slider-admin-theme.css') }}">
+@endpush
+
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Intro Sliders</h2>

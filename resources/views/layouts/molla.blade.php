@@ -52,6 +52,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/skins/skin-demo-4.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/demos/demo-4.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/header-theme.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/intro-slider-theme.css') }}">
     @stack('css')
 </head>
 <body>

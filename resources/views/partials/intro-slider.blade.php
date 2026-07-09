@@ -23,7 +23,7 @@
                     <div class="row justify-content-end">
                         <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                             @if($slider->subtitle)
-                                <h3 class="intro-subtitle text-primary">{{ $slider->subtitle }}</h3>
+                                <h3 class="intro-subtitle">{{ $slider->subtitle }}</h3>
                             @endif
                             <h1 class="intro-title">{!! nl2br(e(preg_replace('/<br\s*\/?>/i', PHP_EOL, $slider->title))) !!}</h1>
                             @if($slider->description)
@@ -34,7 +34,7 @@
                                     @if($slider->old_price)
                                         <sup class="intro-old-price">{{ $slider->old_price }}</sup>
                                     @endif
-                                    <span class="text-primary">{{ $slider->price }}</span>
+                                    <span>{{ $slider->price }}</span>
                                 </div>
                             @endif
                             <a href="{{ $slideLink }}" class="btn btn-primary btn-round">

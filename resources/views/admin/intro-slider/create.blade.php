@@ -2,6 +2,10 @@
 
 @section('header-title', 'Create Intro Slider')
 
+@push('css')
+<link rel="stylesheet" href="{{ asset('assets/css/intro-slider-admin-theme.css') }}">
+@endpush
+
 @section('content')
 <h2>Create Intro Slider</h2>
 <p class="text-muted mb-4">Configure the homepage banner. Use <strong>"Manage Product Details"</strong> after saving to add the product information.</p>
