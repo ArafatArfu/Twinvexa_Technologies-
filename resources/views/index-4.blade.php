@@ -2,7 +2,7 @@
 
 @section('content')
 @push('css')
-    <link rel="stylesheet" href="{{ asset('assets/css/trending-products.css?v=1790168449') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/trending-products.css?v=1790169701') }}">
 @endpush
 <main class="main">
     @include('partials.intro-slider')

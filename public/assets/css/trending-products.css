@@ -427,3 +427,169 @@
         padding: 10px 12px 12px !important;
     }
 }
+
+/* FULL WIDTH PRODUCT IMAGE INSIDE CARD */
+
+.popular-product-card {
+    overflow: hidden !important;
+}
+
+.popular-product-image-box {
+    width: 100% !important;
+    height: 175px !important;
+    min-height: 175px !important;
+    padding: 8px 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+}
+
+.popular-product-image-box a {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.popular-product-image {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 155px !important;
+    max-height: 155px !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    transition: transform .35s ease, filter .35s ease !important;
+}
+
+.popular-product-card:hover .popular-product-image {
+    transform: scale(1.06) !important;
+    filter: drop-shadow(0 10px 14px rgba(37,99,235,.22)) !important;
+}
+
+.popular-product-card-body {
+    min-width: 0 !important;
+}
+
+@media (max-width: 767px) {
+    .popular-product-image-box {
+        height: 145px !important;
+        min-height: 145px !important;
+        padding: 6px 8px !important;
+    }
+
+    .popular-product-image {
+        height: 128px !important;
+        max-height: 128px !important;
+    }
+}
+
+/* LARGE EDGE-TO-EDGE PRODUCT IMAGE */
+
+.popular-product-image-box {
+    width: 100% !important;
+    height: 215px !important;
+    min-height: 215px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    border-radius: 18px 18px 0 0 !important;
+}
+
+.popular-product-image-box a {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.popular-product-image {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 205px !important;
+    max-height: 205px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    transition: transform .35s ease, filter .35s ease !important;
+}
+
+.popular-product-card:hover .popular-product-image {
+    transform: scale(1.06) !important;
+    filter: drop-shadow(0 10px 14px rgba(37,99,235,.22)) !important;
+}
+
+@media (max-width: 767px) {
+    .popular-product-image-box {
+        height: 180px !important;
+        min-height: 180px !important;
+    }
+
+    .popular-product-image {
+        height: 172px !important;
+        max-height: 172px !important;
+    }
+}
+
+/* FINAL FULL-WIDTH EDGE-TO-EDGE IMAGE ALIGNMENT */
+
+.popular-product-image-box {
+    width: 100% !important;
+    height: 220px !important;
+    min-height: 220px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 18px 18px 0 0 !important;
+}
+
+.popular-product-image-box a {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.popular-product-image {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 220px !important;
+    max-height: 220px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+}
+
+.popular-product-card:hover .popular-product-image {
+    transform: scale(1.06) !important;
+}
+
+@media (max-width: 767px) {
+    .popular-product-image-box {
+        height: 185px !important;
+        min-height: 185px !important;
+    }
+
+    .popular-product-image {
+        height: 185px !important;
+        max-height: 185px !important;
+    }
+}
