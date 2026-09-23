@@ -218,7 +218,7 @@
                                         </tr>
                                         <tr>
                                             <td>Shipping</td>
-                                            <td class="text-end">{{ $shippingCharge == 0 ? 'Free' : '$' . number_format((float) $shippingCharge, 2) }}</td>
+                                            <td class="text-end">{{ $shippingCharge == 0 ? 'Free' : html_entity_decode('&#2547;') . number_format((float) $shippingCharge, 2) }}</td>
                                         </tr>
                                         <tr>
                                             <td>Discount</td>

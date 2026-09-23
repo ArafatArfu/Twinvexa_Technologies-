@@ -75,7 +75,7 @@
                                     : asset('assets/images/products/product-15.jpg');
                                 $link = route('products.show', $product->slug);
                                 $categoryName = $product->category->name ?? '';
-                                $oldPrice = $product->old_price ? '$' . number_format((float) $product->old_price, 2) : '';
+                                $oldPrice = $product->old_price ? html_entity_decode('&#2547;') . number_format((float) $product->old_price, 2) : '';
                                 $rating = (int) round(($product->average_rating / 5) * 100);
                                 $reviews = $product->review_count;
                                 $labels = [];
@@ -87,7 +87,7 @@
                                 :image="$image"
                                 :category="$categoryName"
                                 :title="$product->name"
-                                :price="'$' . number_format((float) $product->price, 2)"
+                                :price="html_entity_decode('&#2547;') . number_format((float) $product->price, 2)"
                                 :old-price="$oldPrice"
                                 :rating="$rating"
                                 :reviews="$reviews"

@@ -49,7 +49,7 @@
                 <td>{{ $product->category->name ?? '-' }}</td>
                 <td>{{ $product->brand->name ?? '-' }}</td>
                 <td><strong>${{ number_format((float) $product->price, 2) }}</strong></td>
-                <td>{{ $product->old_price ? '$' . number_format((float) $product->old_price, 2) : '-' }}</td>
+                <td>{{ $product->old_price ? html_entity_decode('&#2547;') . number_format((float) $product->old_price, 2) : '-' }}</td>
                 <td>
                     @if($discount)
                         <span class="badge bg-success">{{ $discount }}</span>

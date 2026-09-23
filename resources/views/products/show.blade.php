@@ -100,15 +100,15 @@
 
                             <div class="product-price">
                                 @if($selectedVariant && $selectedVariant->old_price)
-                                    <span class="new-price text-primary">{{ '$' . number_format((float) $selectedVariant->price, 2) }}</span>
-                                    <span class="old-price"><sup>{{ '$' . number_format((float) $selectedVariant->old_price, 2) }}</sup></span>
+                                    <span class="new-price text-primary">{{ html_entity_decode('&#2547;') . number_format((float) $selectedVariant->price, 2) }}</span>
+                                    <span class="old-price"><sup>{{ html_entity_decode('&#2547;') . number_format((float) $selectedVariant->old_price, 2) }}</sup></span>
                                     <span class="product-label-sale">-{{ $selectedVariant->discount_percentage }}</span>
                                 @elseif($discountPercentage)
-                                    <span class="new-price text-primary">{{ '$' . number_format((float) $product->price, 2) }}</span>
-                                    <span class="old-price"><sup>{{ '$' . number_format((float) $product->old_price, 2) }}</sup></span>
+                                    <span class="new-price text-primary">{{ html_entity_decode('&#2547;') . number_format((float) $product->price, 2) }}</span>
+                                    <span class="old-price"><sup>{{ html_entity_decode('&#2547;') . number_format((float) $product->old_price, 2) }}</sup></span>
                                     <span class="product-label-sale">-{{ $discountPercentage }}</span>
                                 @else
-                                    <span class="new-price text-primary">{{ '$' . number_format((float) $product->price, 2) }}</span>
+                                    <span class="new-price text-primary">{{ html_entity_decode('&#2547;') . number_format((float) $product->price, 2) }}</span>
                                 @endif
                             </div>
 
@@ -466,9 +466,9 @@
                                         @endif
                                         <h3 class="product-title"><a href="{{ route('products.show', $related->slug) }}">{{ Str::limit($related->name, 35) }}</a></h3>
                                         <div class="product-price">
-                                            <span class="new-price">{{ '$' . number_format((float) $related->price, 2) }}</span>
+                                            <span class="new-price">{{ html_entity_decode('&#2547;') . number_format((float) $related->price, 2) }}</span>
                                             @if($related->old_price)
-                                                <span class="old-price"><sup>{{ '$' . number_format((float) $related->old_price, 2) }}</sup></span>
+                                                <span class="old-price"><sup>{{ html_entity_decode('&#2547;') . number_format((float) $related->old_price, 2) }}</sup></span>
                                             @endif
                                         </div>
                                         <div class="ratings-container">

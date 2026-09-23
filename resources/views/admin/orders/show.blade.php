@@ -88,7 +88,7 @@
                             </tr>
                             <tr>
                                 <td colspan="3" class="text-end">Shipping</td>
-                                <td>{{ $order->shipping_charge == 0 ? 'Free' : '$' . number_format((float) $order->shipping_charge, 2) }}</td>
+                                <td>{{ $order->shipping_charge == 0 ? 'Free' : html_entity_decode('&#2547;') . number_format((float) $order->shipping_charge, 2) }}</td>
                             </tr>
                             <tr>
                                 <td colspan="3" class="text-end"><strong>Total</strong></td>

@@ -34,7 +34,7 @@
                                 ? (str_starts_with($product->image, 'assets/') ? asset($product->image) : asset('storage/' . $product->image))
                                 : asset('assets/images/products/product-15.jpg');
                             $link = route('deals.show', $product->slug);
-                            $oldPrice = $product->old_price ? '$' . number_format((float) $product->old_price, 2) : '';
+                            $oldPrice = $product->old_price ? html_entity_decode('&#2547;') . number_format((float) $product->old_price, 2) : '';
                             $discount = $product->old_price && $product->price && $product->old_price > $product->price
                                 ? round((($product->old_price - $product->price) / $product->old_price) * 100) . '%'
                                 : null;

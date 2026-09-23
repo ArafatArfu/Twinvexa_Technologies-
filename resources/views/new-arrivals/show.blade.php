@@ -94,10 +94,10 @@
 
                             <div class="product-price">
                                 @if($product->old_price && $product->old_price > $product->price)
-                                    <span class="new-price">{{ '$' . number_format((float) $product->price, 2) }}</span>
-                                    <span class="old-price">Was {{ '$' . number_format((float) $product->old_price, 2) }}</span>
+                                    <span class="new-price">{{ html_entity_decode('&#2547;') . number_format((float) $product->price, 2) }}</span>
+                                    <span class="old-price">Was {{ html_entity_decode('&#2547;') . number_format((float) $product->old_price, 2) }}</span>
                                 @else
-                                    {{ '$' . number_format((float) $product->price, 2) }}
+                                    {{ html_entity_decode('&#2547;') . number_format((float) $product->price, 2) }}
                                 @endif
                             </div>
 
@@ -289,8 +289,8 @@
                         $relImage = $relatedProduct->image
                             ? (str_starts_with($relatedProduct->image, 'assets/') ? asset($relatedProduct->image) : asset('storage/' . $relatedProduct->image))
                             : asset('assets/images/products/product-15.jpg');
-                        $relPrice = '$' . number_format((float) $relatedProduct->price, 2);
-                        $relOldPrice = $relatedProduct->old_price ? '$' . number_format((float) $relatedProduct->old_price, 2) : '';
+                        $relPrice = html_entity_decode('&#2547;') . number_format((float) $relatedProduct->price, 2);
+                        $relOldPrice = $relatedProduct->old_price ? html_entity_decode('&#2547;') . number_format((float) $relatedProduct->old_price, 2) : '';
                         $relRating = ($relatedProduct->average_rating / 5) * 100;
                         $relReviews = $relatedProduct->review_count;
                     @endphp

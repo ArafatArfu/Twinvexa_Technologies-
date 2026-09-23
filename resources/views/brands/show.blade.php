@@ -64,7 +64,7 @@
                             $image = $product->image
                                 ? (str_starts_with($product->image, 'assets/') ? asset($product->image) : asset('storage/' . $product->image))
                                 : asset('assets/images/products/product-15.jpg');
-                            $oldPrice = $product->old_price ? '$' . number_format((float) $product->old_price, 2) : '';
+                            $oldPrice = $product->old_price ? html_entity_decode('&#2547;') . number_format((float) $product->old_price, 2) : '';
                             $rating = (int) round(($product->average_rating / 5) * 100);
                             $reviews = $product->review_count;
                             $isAvailable = $product->quantity > 0;
@@ -102,7 +102,7 @@
                                     @endif
                                     <h3 class="product-title"><a href="{{ route('products.show', $product->slug) }}">{{ $product->name }}</a></h3>
                                     <div class="product-price">
-                                        <span class="new-price">{{ '$' . number_format((float) $product->price, 2) }}</span>
+                                        <span class="new-price">{{ html_entity_decode('&#2547;') . number_format((float) $product->price, 2) }}</span>
                                         @if($oldPrice)
                                             <span class="old-price">Was {{ $oldPrice }}</span>
                                         @endif
