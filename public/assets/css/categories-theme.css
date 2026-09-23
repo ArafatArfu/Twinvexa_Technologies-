@@ -1,0 +1,27 @@
+/* ===== EXPLORE POPULAR CATEGORIES THEME ===== */
+/* Primary Pink: #C51F5D | Dark Blue: #243447 | Deep Dark: #141D26 | Soft Light: #E2E2D2 */
+
+/* Section heading */
+.cat-blocks-container .title,
+.title.text-center {
+    color: #141D26 !important;
+    font-weight: 700 !important;
+}
+
+/* Category card image wrapper - clean, no border */
+.cat-block-image-wrapper {
+    background-color: #ffffff !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+}
+
+/* Category title text - static, no hover effect */
+.cat-block-title {
+    color: #243447 !important;
+    font-weight: 600 !important;
+}
+
+/* Links - static color, no hover effect */
+.cat-blocks-container a {
+    color: inherit !important;
+}

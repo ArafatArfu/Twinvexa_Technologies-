@@ -1,0 +1,592 @@
+@extends('admin.layouts.app')
+
+@section('header-title', 'Edit Keyboard Product')
+
+@section('content')
+<h2>Edit Product</h2>
+
+<form action="{{ route('admin.trending-products.update', $product) }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    @method('PUT')
+
+    <div class="card mb-3">
+        <div class="card-header">Basic Information</div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="name" class="form-label">Product Title <span class="text-danger">*</span></label>
+                <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $product->name) }}" required placeholder="e.g., Samsung Galaxy Note9">
+                @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+
+            <div class="mb-3">
+                <label for="slug" class="form-label">Slug</label>
+                <input type="text" name="slug" id="slug" class="form-control @error('slug') is-invalid @enderror" value="{{ old('slug', $product->slug) }}" placeholder="e.g., samsung-galaxy-note9">
+                @error('slug')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <small class="text-muted">Leave empty to auto-generate from the product name.</small>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="category_id" class="form-label">Category <span class="text-danger">*</span></label>
+                    <select name="category_id" id="category_id" class="form-control @error('category_id') is-invalid @enderror" required>
+                        <option value="">Select Category</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('category_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="add-category-btn">+ Add New Category</button>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="brand_id" class="form-label">Brand</label>
+                    <select name="brand_id" id="brand_id" class="form-control @error('brand_id') is-invalid @enderror">
+                        <option value="">Select Brand</option>
+                        @foreach($brands as $brand)
+                            <option value="{{ $brand->id }}" {{ old('brand_id', $product->brand_id) == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('brand_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="add-brand-btn">+ Add New Brand</button>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="sku" class="form-label">SKU</label>
+                <input type="text" name="sku" id="sku" class="form-control @error('sku') is-invalid @enderror" value="{{ old('sku', $product->sku) }}" placeholder="e.g., TREND-PROD-001">
+                @error('sku')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">Pricing & Inventory</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="price" class="form-label">Current Price <span class="text-danger">*</span></label>
+                    <input type="number" step="0.01" name="price" id="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price', $product->price) }}" required placeholder="0.00">
+                    @error('price')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="old_price" class="form-label">Old Price</label>
+                    <input type="number" step="0.01" name="old_price" id="old_price" class="form-control @error('old_price') is-invalid @enderror" value="{{ old('old_price', $product->old_price) }}" placeholder="0.00">
+                    @error('old_price')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    <small class="text-muted">Show strikethrough original price for discount badge.</small>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="quantity" class="form-label">Stock Quantity <span class="text-danger">*</span></label>
+                    <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" value="{{ old('quantity', $product->quantity) }}" required min="0">
+                    @error('quantity')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">Trending Section Settings</div>
+        <div class="card-body">
+            <div class="form-check mb-2">
+                <input type="checkbox" name="is_trending" id="is_trending" class="form-check-input" value="1" {{ old('is_trending', $product->is_trending) ? 'checked' : '' }}>
+                <label for="is_trending" class="form-check-label">Show in Keyboard tab</label>
+            </div>
+            <div class="form-check mb-2">
+                <input type="checkbox" name="is_top_rated" id="is_top_rated" class="form-check-input" value="1" {{ old('is_top_rated', $product->is_top_rated) ? 'checked' : '' }}>
+                <label for="is_top_rated" class="form-check-label">Show in Top Rated tab</label>
+            </div>
+            <div class="form-check mb-2">
+                <input type="checkbox" name="is_best_selling" id="is_best_selling" class="form-check-input" value="1" {{ old('is_best_selling', $product->is_best_selling) ? 'checked' : '' }}>
+                <label for="is_best_selling" class="form-check-label">Show in Best Selling tab</label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" name="is_on_sale" id="is_on_sale" class="form-check-input" value="1" {{ old('is_on_sale', $product->is_on_sale) ? 'checked' : '' }}>
+                <label for="is_on_sale" class="form-check-label">Show in On Sale tab</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">Media</div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="image" class="form-label">Product Image</label>
+                <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror" accept="image/*">
+                @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <small class="text-muted">Recommended: 600 x 600 px. Max 4MB. Leave empty to keep current image.</small>
+
+                @if($product->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image))
+                    <div class="mt-3 d-flex align-items-center gap-3">
+                        <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" width="120" class="img-thumbnail">
+                        <div>
+                            <label class="form-check">
+                                <input type="checkbox" name="remove_image" id="remove_image" class="form-check-input" value="1">
+                                <span class="form-check-label text-danger">Remove current image</span>
+                            </label>
+                        </div>
+                    </div>
+                @endif
+
+                <div id="main-image-preview" class="mt-3 d-none">
+                    <img src="#" alt="Preview" width="120" class="img-thumbnail" id="main-image-preview-img">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="gallery" class="form-label">Product Gallery Images</label>
+                <input type="file" name="gallery[]" id="gallery" class="form-control @error('gallery') is-invalid @enderror" accept="image/*" multiple>
+                @error('gallery')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                @error('gallery.*')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <small class="text-muted">You can select multiple images. Max 4MB each. Existing gallery images will be replaced on upload.</small>
+                <div id="gallery-preview" class="d-flex flex-wrap gap-2 mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">Descriptions</div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="short_description" class="form-label">Short Description</label>
+                <textarea name="short_description" id="short_description" class="form-control @error('short_description') is-invalid @enderror" rows="2" placeholder="Brief product summary...">{{ old('short_description', $product->short_description) }}</textarea>
+                @error('short_description')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Full Description</label>
+                <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" rows="5" placeholder="Detailed product description...">{{ old('description', $product->description) }}</textarea>
+                @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">Shipping & Returns</div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="shipping_information" class="form-label">Shipping Information</label>
+                <textarea name="shipping_information" id="shipping_information" class="form-control @error('shipping_information') is-invalid @enderror" rows="3" placeholder="Shipping details...">{{ old('shipping_information', $product->shipping_information) }}</textarea>
+                @error('shipping_information')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label for="return_policy" class="form-label">Return Policy</label>
+                <textarea name="return_policy" id="return_policy" class="form-control @error('return_policy') is-invalid @enderror" rows="3" placeholder="Return policy details...">{{ old('return_policy', $product->return_policy) }}</textarea>
+                @error('return_policy')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">Display Settings</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="display_order" class="form-label">Display Order</label>
+                    <input type="number" name="display_order" id="display_order" class="form-control @error('display_order') is-invalid @enderror" value="{{ old('display_order', $product->display_order) }}">
+                    @error('display_order')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    <small class="text-muted">Lower numbers appear first.</small>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Status</label>
+                    <div class="form-check mt-2">
+                        <input type="checkbox" name="is_active" id="is_active" class="form-check-input" value="1" {{ old('is_active', $product->is_active) ? 'checked' : '' }}>
+                        <label for="is_active" class="form-check-label">Active</label>
+                    </div>
+                    <small class="text-muted d-block">Only active products will be displayed on the frontend.</small>
+                </div>
+            </div>
+
+            <div class="form-check mb-2">
+                <input type="checkbox" name="is_featured" id="is_featured" class="form-check-input" value="1" {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}>
+                <label for="is_featured" class="form-check-label">Featured Product</label>
+            </div>
+        </div>
+    </div>
+
+    @include('admin.partials.badge-selector')
+
+    <button type="submit" class="btn btn-primary">Update Product</button>
+    <a href="{{ route('admin.trending-products.index') }}" class="btn btn-secondary">Cancel</a>
+
+<div class="card mb-3" id="trending-complete-gallery-specification">
+    <div class="card-header"><strong>Product Gallery</strong></div>
+    <div class="card-body">
+
+        @if($product->images->isNotEmpty())
+            <div class="row g-3 mb-4">
+                @foreach($product->images as $galleryImage)
+                    <div class="col-md-3 col-sm-4 col-6">
+                        <div class="card h-100">
+                            <img src="{{ asset('storage/' . $galleryImage->image) }}"
+                                 class="card-img-top"
+                                 style="height:160px;object-fit:contain;background:#f8f9fa;"
+                                 alt="Gallery image">
+
+                            <div class="card-body p-2 text-center">
+                                <label class="small text-danger">
+                                    <input type="checkbox"
+                                           name="delete_gallery_images[]"
+                                           value="{{ $galleryImage->id }}">
+                                    Delete
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <p class="text-muted">No gallery images uploaded yet.</p>
+        @endif
+
+        <label class="form-label">Add New Gallery Images</label>
+        <input type="file"
+               name="gallery[]"
+               id="trending-gallery-images"
+               class="form-control"
+               accept="image/jpeg,image/png,image/webp"
+               multiple>
+
+        <div id="trending-gallery-preview" class="row g-2 mt-3"></div>
+
+        <small class="text-muted">
+            Existing images will remain when new images are added.
+        </small>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header"><strong>Specifications</strong></div>
+    <div class="card-body">
+        <div id="trending-specifications-container">
+            @forelse(old('specifications', $product->specifications->toArray()) as $index => $spec)
+                <div class="row g-2 trending-specification-row mb-2">
+                    <div class="col-md-5">
+                        <input type="text"
+                               name="specifications[{{ $index }}][key]"
+                               value="{{ $spec['key'] ?? '' }}"
+                               class="form-control"
+                               placeholder="Specification name">
+                    </div>
+
+                    <div class="col-md-5">
+                        <input type="text"
+                               name="specifications[{{ $index }}][value]"
+                               value="{{ $spec['value'] ?? '' }}"
+                               class="form-control"
+                               placeholder="Specification value">
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button"
+                                class="btn btn-danger btn-sm remove-trending-specification">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            @empty
+                <div class="row g-2 trending-specification-row mb-2">
+                    <div class="col-md-5">
+                        <input type="text"
+                               name="specifications[0][key]"
+                               class="form-control"
+                               placeholder="Specification name">
+                    </div>
+
+                    <div class="col-md-5">
+                        <input type="text"
+                               name="specifications[0][value]"
+                               class="form-control"
+                               placeholder="Specification value">
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button"
+                                class="btn btn-danger btn-sm remove-trending-specification">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            @endforelse
+        </div>
+
+        <button type="button"
+                id="add-trending-specification"
+                class="btn btn-secondary btn-sm">
+            Add Another Specification
+        </button>
+    </div>
+</div>
+
+</form>
+@endsection
+
+@push('scripts')
+<script>
+document.getElementById('image')?.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const preview = document.getElementById('main-image-preview');
+    const img = document.getElementById('main-image-preview-img');
+    if (file && preview && img) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            img.src = e.target.result;
+            preview.classList.remove('d-none');
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+const galleryInput = document.getElementById('gallery');
+const galleryPreview = document.getElementById('gallery-preview');
+
+if (galleryInput) {
+    galleryInput.addEventListener('change', function(e) {
+        galleryPreview.innerHTML = '';
+        Array.from(e.target.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'position-relative';
+                div.innerHTML = '<img src="' + e.target.result + '" width="80" height="80" class="img-thumbnail">' +
+                    '<button type="button" class="btn btn-danger btn-sm position-absolute top-0 start-100 translate-middle p-0" style="width:20px;height:20px;font-size:10px;line-height:1;" data-remove>&times;</button>';
+                galleryPreview.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
+    galleryPreview.addEventListener('click', function(e) {
+        if (e.target.hasAttribute('data-remove')) {
+            const imgWrapper = e.target.closest('.position-relative');
+            if (imgWrapper) {
+                imgWrapper.remove();
+            }
+        }
+    });
+}
+
+document.getElementById('add-category-btn')?.addEventListener('click', function() {
+    const modal = new bootstrap.Modal(document.getElementById('categoryModal'));
+    modal.show();
+});
+
+document.getElementById('add-brand-btn')?.addEventListener('click', function() {
+    const modal = new bootstrap.Modal(document.getElementById('brandModal'));
+    modal.show();
+});
+
+document.getElementById('save-category-modal')?.addEventListener('click', function() {
+    const nameInput = document.getElementById('modal-category-name');
+    const name = nameInput.value.trim();
+    const errorDiv = document.getElementById('category-error');
+    if (!name) {
+        errorDiv.classList.remove('d-none');
+        nameInput.classList.add('is-invalid');
+        return;
+    }
+    errorDiv.classList.add('d-none');
+    nameInput.classList.remove('is-invalid');
+
+    const btn = document.getElementById('save-category-modal');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    fetch("{{ route('admin.categories.ajax.store') }}", {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: name }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        const select = document.getElementById('category_id');
+        const option = new Option(data.name, data.id, true, true);
+        select.add(option);
+        select.value = data.id;
+        nameInput.value = '';
+        const categoryModalEl = document.getElementById('categoryModal');
+        const categoryModalInstance = bootstrap.Modal.getInstance(categoryModalEl) || new bootstrap.Modal(categoryModalEl);
+        categoryModalInstance.hide();
+        btn.disabled = false;
+        btn.textContent = 'Save Category';
+    })
+    .catch(() => {
+        alert('Failed to create category. Please try again.');
+        btn.disabled = false;
+        btn.textContent = 'Save Category';
+    });
+});
+
+document.getElementById('save-brand-modal')?.addEventListener('click', function() {
+    const nameInput = document.getElementById('modal-brand-name');
+    const name = nameInput.value.trim();
+    const errorDiv = document.getElementById('brand-error');
+    if (!name) {
+        errorDiv.classList.remove('d-none');
+        nameInput.classList.add('is-invalid');
+        return;
+    }
+    errorDiv.classList.add('d-none');
+    nameInput.classList.remove('is-invalid');
+
+    const btn = document.getElementById('save-brand-modal');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    fetch("{{ route('admin.brands.ajax.store') }}", {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: name }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        const select = document.getElementById('brand_id');
+        const option = new Option(data.name, data.id, true, true);
+        select.add(option);
+        select.value = data.id;
+        nameInput.value = '';
+        const brandModalEl = document.getElementById('brandModal');
+        const brandModalInstance = bootstrap.Modal.getInstance(brandModalEl) || new bootstrap.Modal(brandModalEl);
+        brandModalInstance.hide();
+        btn.disabled = false;
+        btn.textContent = 'Save Brand';
+    })
+    .catch(() => {
+        alert('Failed to create brand. Please try again.');
+        btn.disabled = false;
+        btn.textContent = 'Save Brand';
+    });
+});
+</script>
+@endpush
+
+
+@push('scripts')
+<script id="trending-view-gallery-specification-js">
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('trending-gallery-images');
+    const preview = document.getElementById('trending-gallery-preview');
+
+    if (input && preview) {
+        let files = new DataTransfer();
+
+        input.addEventListener('change', function () {
+            Array.from(input.files).forEach(function (file) {
+                files.items.add(file);
+            });
+
+            input.files = files.files;
+            preview.innerHTML = '';
+
+            Array.from(files.files).forEach(function (file, index) {
+                const reader = new FileReader();
+
+                reader.onload = function (event) {
+                    const box = document.createElement('div');
+                    box.className = 'col-md-3 col-sm-4 col-6';
+
+                    box.innerHTML = `
+                        <div class="card">
+                            <img src="${event.target.result}"
+                                 class="card-img-top"
+                                 style="height:130px;object-fit:contain;">
+                            <div class="card-body p-2 text-center">
+                                <small>${file.name}</small>
+                                <button type="button"
+                                        class="btn btn-danger btn-sm d-block mx-auto mt-2 remove-new-image">
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    box.querySelector('.remove-new-image')
+                        .addEventListener('click', function () {
+                            const updated = new DataTransfer();
+
+                            Array.from(files.files).forEach(function (item, i) {
+                                if (i !== index) {
+                                    updated.items.add(item);
+                                }
+                            });
+
+                            files = updated;
+                            input.files = files.files;
+                            box.remove();
+                        });
+
+                    preview.appendChild(box);
+                };
+
+                reader.readAsDataURL(file);
+            });
+        });
+    }
+
+    const container = document.getElementById(
+        'trending-specifications-container'
+    );
+    const add = document.getElementById(
+        'add-trending-specification'
+    );
+
+    if (container && add) {
+        add.addEventListener('click', function () {
+            const index = container.querySelectorAll(
+                '.trending-specification-row'
+            ).length;
+
+            const row = document.createElement('div');
+            row.className = 'row g-2 trending-specification-row mb-2';
+
+            row.innerHTML = `
+                <div class="col-md-5">
+                    <input type="text"
+                           name="specifications[${index}][key]"
+                           class="form-control"
+                           placeholder="Specification name">
+                </div>
+                <div class="col-md-5">
+                    <input type="text"
+                           name="specifications[${index}][value]"
+                           class="form-control"
+                           placeholder="Specification value">
+                </div>
+                <div class="col-md-2">
+                    <button type="button"
+                            class="btn btn-danger btn-sm remove-trending-specification">
+                        Remove
+                    </button>
+                </div>
+            `;
+
+            container.appendChild(row);
+        });
+
+        container.addEventListener('click', function (event) {
+            if (event.target.classList.contains(
+                'remove-trending-specification'
+            )) {
+                const row = event.target.closest(
+                    '.trending-specification-row'
+                );
+
+                if (container.querySelectorAll(
+                    '.trending-specification-row'
+                ).length > 1) {
+                    row.remove();
+                } else {
+                    row.querySelectorAll('input').forEach(function (input) {
+                        input.value = '';
+                    });
+                }
+            }
+        });
+    }
+});
+</script>
+@endpush

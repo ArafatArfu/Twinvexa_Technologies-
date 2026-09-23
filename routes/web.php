@@ -1,0 +1,293 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\NavbarController;
+use App\Http\Controllers\HeaderMenuController;
+use App\Http\Controllers\HeaderSectionController;
+use App\Http\Controllers\IntroSliderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\CompareController;
+use App\Http\Controllers\SliderProductController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\BannerProductController;
+use App\Http\Controllers\Admin\NewArrivalController;
+use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\AdminCtaSectionController;
+use App\Http\Controllers\Admin\DealController;
+use App\Http\Controllers\Admin\TrendingProductController;
+use App\Http\Controllers\Admin\RecommendationController;
+use App\Http\Controllers\Admin\IconBoxController;
+use App\Http\Controllers\Admin\FooterController;
+use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\PublicCategoryController;
+use App\Http\Controllers\PublicNewArrivalController;
+use App\Http\Controllers\PublicDealController;
+use App\Http\Controllers\PublicBrandController;
+use App\Http\Controllers\PublicRecommendationController;
+use App\Http\Controllers\Admin\StaticPageController;
+use App\Http\Controllers\Admin\SocialLinkController;
+
+Route::get('/', function () {
+    return view('index-4');
+});
+
+Route::get('product/{slug}', [ProductController::class, 'show'])
+    ->name('products.show');
+
+Route::get('new-arrival/{slug}', [PublicNewArrivalController::class, 'show'])
+    ->name('new-arrivals.show');
+
+Route::get('deal/{slug}', [PublicDealController::class, 'show'])
+    ->name('deals.show');
+
+Route::get('deals', [PublicDealController::class, 'index'])
+    ->name('deals.index');
+
+Route::get('recommendations', [PublicRecommendationController::class, 'index'])
+    ->name('recommendations.index');
+
+Route::get('recommendation/{slug}', [PublicRecommendationController::class, 'show'])
+    ->name('recommendations.show');
+
+Route::post('recommendation/{slug}/buy-now', [PublicRecommendationController::class, 'buyNow'])
+    ->name('recommendations.buy-now')
+    ->middleware('auth');
+
+Route::get('brands', [PublicBrandController::class, 'index'])
+    ->name('brands.index');
+
+Route::get('brand/{slug}', [PublicBrandController::class, 'show'])
+    ->name('brands.show');
+
+Route::post('product/{slug}/review', [ProductController::class, 'review'])
+    ->name('products.review.store');
+
+Route::middleware('auth')->prefix('cart')->name('cart.')->group(function () {
+    Route::post('add/{product}', [CartController::class, 'add'])->name('add');
+    Route::get('/', [CartController::class, 'index'])->name('index');
+    Route::delete('{cartItem}', [CartController::class, 'destroy'])->name('destroy');
+    Route::put('{cartItem}', [CartController::class, 'update'])->name('update');
+});
+
+Route::middleware('auth')->prefix('wishlist')->name('wishlist.')->group(function () {
+    Route::post('toggle/{product}', [WishlistController::class, 'toggle'])->name('toggle');
+    Route::get('/', [WishlistController::class, 'index'])->name('index');
+    Route::delete('{product}', [WishlistController::class, 'destroy'])->name('destroy');
+    Route::post('move-to-cart/{product}', [WishlistController::class, 'moveToCart'])->name('move-to-cart');
+});
+
+Route::middleware('auth')->prefix('checkout')->name('checkout.')->group(function () {
+    Route::get('/', [CheckoutController::class, 'index'])->name('index');
+    Route::post('/', [CheckoutController::class, 'store'])->name('store');
+    Route::get('confirmation/{orderNumber}', [CheckoutController::class, 'confirmation'])->name('confirmation');
+});
+
+Route::middleware('auth')->prefix('compare')->name('compare.')->group(function () {
+    Route::post('toggle/{product}', [CompareController::class, 'toggle'])->name('toggle');
+});
+
+Route::get('compare', [CompareController::class, 'index'])->name('compare.index');
+
+Route::get('404', function () {
+    return view('errors.404');
+})->name('errors.404.page');
+
+Route::fallback(function () {
+    return view('errors.404');
+})->name('errors.404');
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [RegisterController::class, 'register']);
+
+// Protected admin routes
+Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
+
+    Route::get('navbar', [NavbarController::class, 'index'])->name('navbar.index');
+    Route::get('navbar/create', [NavbarController::class, 'create'])->name('navbar.create');
+    Route::post('navbar', [NavbarController::class, 'store'])->name('navbar.store');
+    Route::get('navbar/settings', [NavbarController::class, 'settings'])->name('navbar.settings');
+    Route::put('navbar/settings', [NavbarController::class, 'updateSettings'])->name('navbar.settings.update');
+    Route::get('navbar/{navbarItem}/edit', [NavbarController::class, 'edit'])->name('navbar.edit');
+    Route::put('navbar/{navbarItem}', [NavbarController::class, 'update'])->name('navbar.update');
+    Route::delete('navbar/{navbarItem}', [NavbarController::class, 'destroy'])->name('navbar.destroy');
+
+    Route::get('header', [HeaderMenuController::class, 'index'])->name('header.index');
+    Route::get('header/create', [HeaderMenuController::class, 'create'])->name('header.create');
+    Route::post('header', [HeaderMenuController::class, 'store'])->name('header.store');
+    Route::get('header/{headerMenu}/edit', [HeaderMenuController::class, 'edit'])->name('header.edit');
+    Route::put('header/{headerMenu}', [HeaderMenuController::class, 'update'])->name('header.update');
+    Route::delete('header/{headerMenu}', [HeaderMenuController::class, 'destroy'])->name('header.destroy');
+
+    Route::get('header-sections', [HeaderSectionController::class, 'index'])->name('header-sections.index');
+    Route::get('header-sections/create', [HeaderSectionController::class, 'create'])->name('header-sections.create');
+    Route::post('header-sections', [HeaderSectionController::class, 'store'])->name('header-sections.store');
+    Route::get('header-sections/{headerSection}/edit', [HeaderSectionController::class, 'edit'])->name('header-sections.edit');
+    Route::put('header-sections/{headerSection}', [HeaderSectionController::class, 'update'])->name('header-sections.update');
+    Route::delete('header-sections/{headerSection}', [HeaderSectionController::class, 'destroy'])->name('header-sections.destroy');
+
+    Route::get('intro-slider', [IntroSliderController::class, 'index'])->name('intro-slider.index');
+    Route::get('intro-slider/create', [IntroSliderController::class, 'create'])->name('intro-slider.create');
+    Route::post('intro-slider', [IntroSliderController::class, 'store'])->name('intro-slider.store');
+    Route::get('intro-slider/{introSlider}/edit', [IntroSliderController::class, 'edit'])->name('intro-slider.edit');
+    Route::put('intro-slider/{introSlider}', [IntroSliderController::class, 'update'])->name('intro-slider.update');
+    Route::delete('intro-slider/{introSlider}', [IntroSliderController::class, 'destroy'])->name('intro-slider.destroy');
+
+    Route::get('intro-slider/{introSlider}/product', [SliderProductController::class, 'edit'])->name('slider-product.edit');
+    Route::put('intro-slider/{introSlider}/product', [SliderProductController::class, 'update'])->name('slider-product.update');
+
+    Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+    Route::get('categories/options', [CategoryController::class, 'options'])->name('categories.options');
+    Route::post('categories/ajax', [CategoryController::class, 'ajaxStore'])->name('categories.ajax.store');
+
+    Route::get('brands', [BrandController::class, 'index'])->name('brands.index');
+    Route::get('brands/create', [BrandController::class, 'create'])->name('brands.create');
+    Route::post('brands', [BrandController::class, 'store'])->name('brands.store');
+    Route::get('brands/{brand}/edit', [BrandController::class, 'edit'])->name('brands.edit');
+    Route::put('brands/{brand}', [BrandController::class, 'update'])->name('brands.update');
+    Route::delete('brands/{brand}', [BrandController::class, 'destroy'])->name('brands.destroy');
+
+    Route::get('brands/options', [BrandController::class, 'options'])->name('brands.options');
+    Route::post('brands/ajax', [BrandController::class, 'ajaxStore'])->name('brands.ajax.store');
+
+    Route::get('products', [AdminProductController::class, 'index'])->name('products.index');
+    Route::get('products/create', [AdminProductController::class, 'create'])->name('products.create');
+    Route::post('products', [AdminProductController::class, 'store'])->name('products.store');
+    Route::get('products/{product}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
+    Route::put('products/{product}', [AdminProductController::class, 'update'])->name('products.update');
+    Route::delete('products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
+
+    Route::get('trending-products', [TrendingProductController::class, 'index'])->name('trending-products.index');
+    Route::get('trending-products/create', [TrendingProductController::class, 'create'])->name('trending-products.create');
+    Route::post('trending-products', [TrendingProductController::class, 'store'])->name('trending-products.store');
+    Route::get('trending-products/{product}/edit', [TrendingProductController::class, 'edit'])->name('trending-products.edit');
+    Route::put('trending-products/{product}', [TrendingProductController::class, 'update'])->name('trending-products.update');
+    Route::delete('trending-products/{product}', [TrendingProductController::class, 'destroy'])->name('trending-products.destroy');
+
+    Route::get('trending-products/banner', [TrendingProductController::class, 'bannerIndex'])->name('trending-products.banner.index');
+    Route::get('trending-products/banner/create', [TrendingProductController::class, 'bannerCreate'])->name('trending-products.banner.create');
+    Route::post('trending-products/banner', [TrendingProductController::class, 'bannerStore'])->name('trending-products.banner.store');
+    Route::get('trending-products/banner/{trendingBanner}/edit', [TrendingProductController::class, 'bannerEdit'])->name('trending-products.banner.edit');
+    Route::put('trending-products/banner/{trendingBanner}', [TrendingProductController::class, 'bannerUpdate'])->name('trending-products.banner.update');
+    Route::delete('trending-products/banner/{trendingBanner}', [TrendingProductController::class, 'bannerDestroy'])->name('trending-products.banner.destroy');
+
+    Route::get('banners', [BannerController::class, 'index'])->name('banners.index');
+    Route::get('banners/create', [BannerController::class, 'create'])->name('banners.create');
+    Route::post('banners', [BannerController::class, 'store'])->name('banners.store');
+    Route::get('banners/{banner}/edit', [BannerController::class, 'edit'])->name('banners.edit');
+    Route::put('banners/{banner}', [BannerController::class, 'update'])->name('banners.update');
+    Route::delete('banners/{banner}', [BannerController::class, 'destroy'])->name('banners.destroy');
+
+    Route::get('banner-products', [BannerProductController::class, 'index'])->name('banner-products.index');
+    Route::get('banner-products/create', [BannerProductController::class, 'create'])->name('banner-products.create');
+    Route::post('banner-products', [BannerProductController::class, 'store'])->name('banner-products.store');
+    Route::get('banner-products/{bannerProduct}/edit', [BannerProductController::class, 'edit'])->name('banner-products.edit');
+    Route::put('banner-products/{bannerProduct}', [BannerProductController::class, 'update'])->name('banner-products.update');
+    Route::delete('banner-products/{bannerProduct}', [BannerProductController::class, 'destroy'])->name('banner-products.destroy');
+
+    Route::get('new-arrivals', [NewArrivalController::class, 'index'])->name('new-arrivals.index');
+    Route::get('new-arrivals/create', [NewArrivalController::class, 'create'])->name('new-arrivals.create');
+    Route::post('new-arrivals', [NewArrivalController::class, 'store'])->name('new-arrivals.store');
+    Route::get('new-arrivals/{product}/edit', [NewArrivalController::class, 'edit'])->name('new-arrivals.edit');
+    Route::put('new-arrivals/{product}', [NewArrivalController::class, 'update'])->name('new-arrivals.update');
+    Route::delete('new-arrivals/{product}', [NewArrivalController::class, 'destroy'])->name('new-arrivals.destroy');
+
+    Route::get('recommendations', [RecommendationController::class, 'index'])->name('recommendations.index');
+    Route::get('recommendations/create', [RecommendationController::class, 'create'])->name('recommendations.create');
+    Route::post('recommendations', [RecommendationController::class, 'store'])->name('recommendations.store');
+    Route::get('recommendations/{product}/edit', [RecommendationController::class, 'edit'])->name('recommendations.edit');
+    Route::put('recommendations/{product}', [RecommendationController::class, 'update'])->name('recommendations.update');
+    Route::delete('recommendations/{product}', [RecommendationController::class, 'destroy'])->name('recommendations.destroy');
+
+    Route::get('deals', [DealController::class, 'index'])->name('deals.index');
+    Route::get('deals/create', [DealController::class, 'create'])->name('deals.create');
+    Route::post('deals', [DealController::class, 'store'])->name('deals.store');
+    Route::get('deals/{product}/edit', [DealController::class, 'edit'])->name('deals.edit');
+    Route::put('deals/{product}', [DealController::class, 'update'])->name('deals.update');
+    Route::delete('deals/{product}', [DealController::class, 'destroy'])->name('deals.destroy');
+
+    Route::get('cta-sections', [AdminCtaSectionController::class, 'index'])->name('cta-sections.index');
+    Route::get('cta-sections/create', [AdminCtaSectionController::class, 'create'])->name('cta-sections.create');
+    Route::post('cta-sections', [AdminCtaSectionController::class, 'store'])->name('cta-sections.store');
+    Route::get('cta-sections/{ctaSection}/edit', [AdminCtaSectionController::class, 'edit'])->name('cta-sections.edit');
+    Route::put('cta-sections/{ctaSection}', [AdminCtaSectionController::class, 'update'])->name('cta-sections.update');
+    Route::delete('cta-sections/{ctaSection}', [AdminCtaSectionController::class, 'destroy'])->name('cta-sections.destroy');
+
+    Route::get('icon-boxes', [IconBoxController::class, 'index'])->name('icon-boxes.index');
+    Route::get('icon-boxes/create', [IconBoxController::class, 'create'])->name('icon-boxes.create');
+    Route::post('icon-boxes', [IconBoxController::class, 'store'])->name('icon-boxes.store');
+    Route::get('icon-boxes/{iconBox}/edit', [IconBoxController::class, 'edit'])->name('icon-boxes.edit');
+    Route::put('icon-boxes/{iconBox}', [IconBoxController::class, 'update'])->name('icon-boxes.update');
+    Route::delete('icon-boxes/{iconBox}', [IconBoxController::class, 'destroy'])->name('icon-boxes.destroy');
+
+    Route::get('footer', [FooterController::class, 'index'])->name('footer.index');
+    Route::put('footer', [FooterController::class, 'update'])->name('footer.update');
+
+    Route::get('footer/links', [FooterController::class, 'linksIndex'])->name('footer.links.index');
+    Route::get('footer/links/create', [FooterController::class, 'linksCreate'])->name('footer.links.create');
+    Route::post('footer/links', [FooterController::class, 'linksStore'])->name('footer.links.store');
+    Route::get('footer/links/{footerLink}/edit', [FooterController::class, 'linksEdit'])->name('footer.links.edit');
+    Route::put('footer/links/{footerLink}', [FooterController::class, 'linksUpdate'])->name('footer.links.update');
+    Route::delete('footer/links/{footerLink}', [FooterController::class, 'linksDestroy'])->name('footer.links.destroy');
+
+    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::put('settings', [SettingsController::class, 'update'])->name('settings.update');
+
+    Route::get('static-pages', [StaticPageController::class, 'index'])->name('static-pages.index');
+    Route::get('static-pages/create', [StaticPageController::class, 'create'])->name('static-pages.create');
+    Route::post('static-pages', [StaticPageController::class, 'store'])->name('static-pages.store');
+    Route::get('static-pages/{staticPage}/edit', [StaticPageController::class, 'edit'])->name('static-pages.edit');
+    Route::put('static-pages/{staticPage}', [StaticPageController::class, 'update'])->name('static-pages.update');
+    Route::delete('static-pages/{staticPage}', [StaticPageController::class, 'destroy'])->name('static-pages.destroy');
+
+    Route::get('social-links', [SocialLinkController::class, 'index'])->name('social-links.index');
+    Route::get('social-links/create', [SocialLinkController::class, 'create'])->name('social-links.create');
+    Route::post('social-links', [SocialLinkController::class, 'store'])->name('social-links.store');
+    Route::get('social-links/{socialLink}/edit', [SocialLinkController::class, 'edit'])->name('social-links.edit');
+    Route::put('social-links/{socialLink}', [SocialLinkController::class, 'update'])->name('social-links.update');
+    Route::delete('social-links/{socialLink}', [SocialLinkController::class, 'destroy'])->name('social-links.destroy');
+
+    Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+    Route::put('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
+    Route::delete('orders/{order}', [AdminOrderController::class, 'destroy'])->name('orders.destroy');
+});
+
+Route::get('intro-sliders', [IntroSliderController::class, 'publicIndex'])->name('intro-sliders.index');
+Route::get('intro-slider/{slug}', [IntroSliderController::class, 'publicShow'])->name('intro-slider.show');
+Route::post('intro-slider/{slug}/review', [SliderProductController::class, 'review'])->name('slider-product.review.store');
+
+Route::get('categories', [PublicCategoryController::class, 'index'])->name('category.index');
+Route::get('category/{slug}', [PublicCategoryController::class, 'show'])->name('category.show');
+
+Route::get('banner-product/{slug}', \App\Http\Controllers\PublicBannerProductController::class)->name('banner-product.show');
+
+Route::get('cta-product/{slug}', [App\Http\Controllers\PublicCtaProductController::class, 'show'])->name('cta-products.show');
+
+Route::post('newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+
+Route::get('pages/{slug}', [PageController::class, 'show'])->name('pages.show');
+
+Route::fallback(function () {
+    return view('errors.404');
+})->name('errors.404');

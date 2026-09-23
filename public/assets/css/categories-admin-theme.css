@@ -1,0 +1,128 @@
+/* ===== CATEGORIES ADMIN DASHBOARD THEME ===== */
+/* Primary Pink: #C51F5D | Dark Blue: #243447 | Deep Dark: #141D26 | Soft Light: #E2E2D2 */
+
+/* Page heading */
+.admin-categories .header-title,
+.header-title {
+    color: #141D26 !important;
+    font-weight: 700 !important;
+}
+
+/* Table heading / card border */
+.admin-categories .table th,
+.table th {
+    background-color: #f8fafc !important;
+    color: #141D26 !important;
+    border-bottom: 2px solid #E2E2D2 !important;
+}
+
+.admin-categories .card,
+.card {
+    border: none !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.admin-categories .card-header,
+.card-header {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #E2E2D2 !important;
+    color: #141D26 !important;
+    font-weight: 600 !important;
+}
+
+/* Input focus color */
+.admin-categories .form-control:focus,
+.admin-categories .form-select:focus,
+.form-control:focus,
+.form-select:focus {
+    border-color: #C51F5D !important;
+    box-shadow: 0 0 0 3px rgba(197, 31, 93, 0.25) !important;
+}
+
+/* Save/Update buttons */
+.admin-categories .btn-primary,
+.btn-primary {
+    background-color: #C51F5D !important;
+    border-color: #C51F5D !important;
+    color: #ffffff !important;
+}
+
+.admin-categories .btn-primary:hover,
+.btn-primary:hover {
+    background-color: #243447 !important;
+    border-color: #243447 !important;
+    color: #E2E2D2 !important;
+}
+
+/* Status badges */
+.admin-categories .badge.bg-success,
+.badge.bg-success {
+    background-color: #10b981 !important;
+}
+
+.admin-categories .badge.bg-secondary,
+.badge.bg-secondary {
+    background-color: #64748b !important;
+}
+
+.admin-categories .badge.bg-warning,
+.badge.bg-warning {
+    background-color: #f59e0b !important;
+    color: #141D26 !important;
+}
+
+.admin-categories .badge.bg-info,
+.badge.bg-info {
+    background-color: #C51F5D !important;
+    color: #ffffff !important;
+}
+
+.admin-categories .badge.bg-light,
+.badge.bg-light {
+    background-color: #f1f5f9 !important;
+    color: #141D26 !important;
+}
+
+/* Action buttons */
+.admin-categories .btn-warning,
+.btn-warning {
+    background-color: #f59e0b !important;
+    border-color: #f59e0b !important;
+    color: #141D26 !important;
+}
+
+.admin-categories .btn-warning:hover,
+.btn-warning:hover {
+    background-color: #d97706 !important;
+    border-color: #d97706 !important;
+    color: #ffffff !important;
+}
+
+.admin-categories .btn-danger,
+.btn-danger {
+    background-color: #ef4444 !important;
+    border-color: #ef4444 !important;
+    color: #ffffff !important;
+}
+
+.admin-categories .btn-danger:hover,
+.btn-danger:hover {
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
+    color: #ffffff !important;
+}
+
+/* User avatar */
+.admin-categories .user-avatar,
+.user-avatar {
+    background-color: #C51F5D !important;
+    color: #ffffff !important;
+}
+
+/* Alert info box */
+.admin-categories .alert-info,
+.alert-info {
+    background-color: #f0f9ff !important;
+    border-color: #C51F5D !important;
+    color: #141D26 !important;
+}

@@ -1,0 +1,123 @@
+/* ===== INTRO SLIDER ADMIN DASHBOARD THEME ===== */
+/* Primary Pink: #C51F5D | Dark Blue: #243447 | Deep Dark: #141D26 | Soft Light: #E2E2D2 */
+
+/* Page heading */
+.admin-intro-slider .header-title,
+.header-title {
+    color: #141D26 !important;
+    font-weight: 700 !important;
+}
+
+/* Form section headings */
+.admin-intro-slider .card-header,
+.card-header {
+    color: #141D26 !important;
+    border-bottom: 1px solid #E2E2D2 !important;
+    background-color: #ffffff !important;
+}
+
+/* Input focus color */
+.admin-intro-slider .form-control:focus,
+.admin-intro-slider .form-select:focus,
+.form-control:focus,
+.form-select:focus {
+    border-color: #C51F5D !important;
+    box-shadow: 0 0 0 3px rgba(197, 31, 93, 0.25) !important;
+}
+
+/* Save/Update buttons */
+.admin-intro-slider .btn-primary,
+.btn-primary {
+    background-color: #C51F5D !important;
+    border-color: #C51F5D !important;
+    color: #ffffff !important;
+}
+
+.admin-intro-slider .btn-primary:hover,
+.btn-primary:hover {
+    background-color: #243447 !important;
+    border-color: #243447 !important;
+    color: #E2E2D2 !important;
+}
+
+/* Active menu color in sidebar */
+.admin-intro-slider .sidebar-nav-item.active,
+.sidebar-nav-item.active {
+    background: rgba(197, 31, 93, 0.2) !important;
+    color: #E2E2D2 !important;
+}
+
+/* Status badges */
+.admin-intro-slider .badge.bg-success,
+.badge.bg-success {
+    background-color: #10b981 !important;
+}
+
+.admin-intro-slider .badge.bg-secondary,
+.badge.bg-secondary {
+    background-color: #64748b !important;
+}
+
+/* Action buttons */
+.admin-intro-slider .btn-success,
+.btn-success {
+    background-color: #10b981 !important;
+    border-color: #10b981 !important;
+    color: #ffffff !important;
+}
+
+.admin-intro-slider .btn-success:hover,
+.btn-success:hover {
+    background-color: #059669 !important;
+    border-color: #059669 !important;
+    color: #ffffff !important;
+}
+
+.admin-intro-slider .btn-warning,
+.btn-warning {
+    background-color: #f59e0b !important;
+    border-color: #f59e0b !important;
+    color: #141D26 !important;
+}
+
+.admin-intro-slider .btn-warning:hover,
+.btn-warning:hover {
+    background-color: #d97706 !important;
+    border-color: #d97706 !important;
+    color: #ffffff !important;
+}
+
+.admin-intro-slider .btn-danger,
+.btn-danger {
+    background-color: #ef4444 !important;
+    border-color: #ef4444 !important;
+    color: #ffffff !important;
+}
+
+.admin-intro-slider .btn-danger:hover,
+.btn-danger:hover {
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
+    color: #ffffff !important;
+}
+
+/* User avatar */
+.admin-intro-slider .user-avatar,
+.user-avatar {
+    background-color: #C51F5D !important;
+    color: #ffffff !important;
+}
+
+/* Price display in admin table - pink highlight */
+.admin-intro-slider .text-primary,
+.text-primary {
+    color: #C51F5D !important;
+}
+
+/* Alert info box */
+.admin-intro-slider .alert-info,
+.alert-info {
+    background-color: #f0f9ff !important;
+    border-color: #C51F5D !important;
+    color: #141D26 !important;
+}
