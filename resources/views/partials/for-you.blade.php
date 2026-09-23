@@ -1,3 +1,5 @@
+@include('partials.popular-products')
+
 @php
     $recommendationProducts = \App\Models\Product::where('is_recommendation', true)
         ->where('is_active', true)
@@ -27,8 +29,8 @@
                         : asset('assets/images/products/product-15.jpg');
                     $link = route('recommendations.show', $product->slug);
                     $categoryName = $product->category->name ?? '';
-                    $oldPrice = $product->old_price ? '$' . number_format((float) $product->old_price, 2) : '';
-                    $price = '$' . number_format((float) $product->price, 2);
+                    $oldPrice = $product->old_price ? html_entity_decode('&#2547;') . number_format((float) $product->old_price, 2) : '';
+                    $price = html_entity_decode('&#2547;') . number_format((float) $product->price, 2);
                     $rating = (int) round(($product->average_rating / 5) * 100);
                     $reviews = $product->review_count;
                     $isAvailable = $product->quantity > 0;
